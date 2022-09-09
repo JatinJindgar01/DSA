@@ -1,0 +1,104 @@
+//FLATTENING OF LINKEDLIST
+//TC=O(N*N*M)
+//SC=O(N*M)
+class GfG
+{   Node merge(Node a, Node b)
+{
+        Node temp=new Node(0);
+        Node res=temp;
+        while(a!=null && b!=null)
+        {
+            if(a.data<b.data)
+            {
+                temp.bottom=a;
+                temp=temp.bottom;
+                a=a.bottom;
+            }
+            else
+            {
+                temp.bottom=b;
+                temp=temp.bottom;
+                b=b.bottom;
+            }
+            
+        }
+        if(a!=null)
+            temp.bottom=a;
+            else
+            temp.bottom=b;
+            return res.bottom;
+}
+    Node flatten(Node root)
+    {
+	// Your code here
+	if(root==null || root.next==null)
+	return root;
+	Node t1=root;
+	Node t2=root.next;
+	while(t2!=null)
+	{
+	    t1=merge(t1,t2);
+	    t2=t2.next;
+	}
+	return t1;
+// 	root.next=flatten(root.next);
+// 	root=merge(root,root.next);
+// 	root.next=null;
+// 	return root;
+	
+    }
+}
+
+
+//USING MIN_QUEUE
+//TC=O(N*MLOG(N)) SC=O(n*m)
+/*Node class  used in the program
+class Node
+{
+	int data;
+	Node next;
+	Node bottom;
+	
+	Node(int d)
+	{
+		data = d;
+		next = null;
+		bottom = null;
+	}
+}
+*/
+/*  Function which returns the  root of 
+    the flattened linked list. */
+class mc implements Comparator<Node>
+{
+    public int compare(Node o, Node other)
+    {
+        return o.data-other.data;
+    }
+}
+class GfG
+{
+    Node flatten(Node root)
+    {
+	// Your code here
+	Node newHead=new Node(0);
+	Node t=newHead;
+	PriorityQueue<Node> p=new PriorityQueue<>(new mc());
+	while(root!=null)
+	{
+	    p.add(root);
+	    root=root.next;
+	}
+	while(p.isEmpty()==false)
+	{
+	    Node q=p.poll();
+	    t.bottom=q;
+	    t=t.bottom;
+	    if(q.bottom!=null)
+	    p.add(q.bottom);
+	    
+	}
+	
+	return newHead.bottom;
+    }
+}

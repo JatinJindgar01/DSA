@@ -1,0 +1,44 @@
+//TOPOLOGICAL SORT USING DFS
+//TC=O(N+E) SC=O(N)+O(N)+O(N)---> RECURSION STACK, VISITED, STACK FOR STORING TOPOLOGICAL SORT IN REVERSE ORDER
+//RECURSIVE
+
+class Solution
+{
+    //Function to return list containing vertices in Topological order. 
+    static void dfs(int i, ArrayList<ArrayList<Integer>> adj, boolean visited[], Stack<Integer> ans)
+    {
+        visited[i]=true;
+        for(int j=0;j<adj.get(i).size();j++)
+        {
+            int child=adj.get(i).get(j);
+            if(visited[child]==false)
+            {
+                dfs(child,adj,visited,ans);
+            }
+        }
+        ans.push(i);  
+    }
+    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
+    {
+        // add your code here
+        Stack<Integer> ans=new Stack<>();
+        boolean visited[]=new boolean[V];
+        for(int i=0;i<V;i++)
+        {
+            if(visited[i]==false)
+            {
+                dfs(i,adj,visited,ans);
+            }
+        }
+        int topo[]=new int[V];
+        int ind=0;
+        while(ans.size()>0)
+        {
+            topo[ind]=ans.pop();
+            ind++;
+        }
+        return topo;
+    }
+}
+
+

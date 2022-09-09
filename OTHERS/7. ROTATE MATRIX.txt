@@ -1,0 +1,137 @@
+// ROTATE MATRIX
+// CLOCKWISE
+
+//BRUTE TC=O(N*M) SC=O(N*M)
+class Solution {
+    public void rotate(int[][] matrix) {
+        /*
+        Using Extra Space TC=O(N*N +N*N)   SC=O(N*N)
+        In rotated matrix new i=j;
+        In rotated matrix new j=n-i-1;
+        
+        */
+        int n=matrix.length;
+        int m=matrix[0].length;
+        int mat[][]=new int[n][m];
+        int rotated[][]=new int[n][m];
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                rotated[j][n-i-1]=matrix[i][j];
+            }
+        }
+        
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                matrix[i][j]=rotated[i][j];
+            }
+        }
+    }
+}
+
+// BETTER TC=O(N*M) SC=O(1)
+
+       /*
+        1  2  3  Transpose    1  4  7 Reverse rows column by column7 4 1
+        4  5  6 ------------> 2  5  8-------------------->         8 5 2
+        7  8  9               3  6  9                              9 6 3
+        Transpose swap i with j, but only in upper triangular matrix
+        Reverse colums row by row using 2 pointer approach on every row
+        TC=O(N*N +N*N)   SC=O(1)
+        */
+       
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n=matrix.length;
+        int m=matrix[0].length;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<i;j++)
+            {
+                int temp=matrix[i][j];
+                matrix[i][j]=matrix[j][i];
+                matrix[j][i]=temp;
+            }
+        }
+
+        for(int i=0;i<n;i++)
+        {
+            int j=0;
+            int k=m-1;
+            while(j<k)
+            {
+                int temp=matrix[i][j];
+                matrix[i][j]=matrix[i][k];
+                matrix[i][k]=temp;
+                j++;
+                k--;
+            }
+        }
+ 
+    }
+}
+
+
+// ROTATE MATRIX ANTICLOCKWISE
+//BRUTE TC=O(N*M) SC=O(N*M)
+
+class Solution {
+    void rotateMatrix(int arr[][], int n) {
+        // code here
+        int copy[][]=new int[n][n];
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                copy[i][j]=arr[i][j];
+            }
+        }
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                arr[n-j-1][i]=copy[i][j];
+            }
+        }
+    }
+}
+
+
+// BETTER TC=O(N*M) SC=O(1)
+
+class Solution {
+    void rotateMatrix(int arr[][], int n) {
+        // code here
+        //TRANSPOSE
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<i;j++)
+            {
+                int temp=arr[i][j];
+                arr[i][j]=arr[j][i];
+                arr[j][i]=temp;
+            }
+        }
+        // REVERSE ROWS BY TRAVERSING COLUMN BY COLUMN
+        for(int i=0;i<m;i++)
+        {
+            int j=0;
+            int k=n-1;
+            while(j<k)
+            {
+                int temp=arr[j][i];
+                arr[j][i]=arr[k][i];
+                arr[k][i]=temp;
+                j++;
+                k--;
+            }
+        }
+        
+    }
+}
+
+
+ 

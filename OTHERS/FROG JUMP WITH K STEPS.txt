@@ -1,0 +1,109 @@
+/*
+this time frog can go to i+1, i+2, i+3 and so on till i+k index.
+Find the minimum cost of reaching the nth stair
+*/
+
+
+N=5 K=3
+10 30 40 50 20
+
+public class Solution {
+	public static int aux(int n, int heights[],k)
+	{
+		if(n==0)
+			return 0;
+            int min=Integer.MAX_INT;
+            for(int i=1;i<=k;i++)
+            {
+                if(n-i>=0)
+                min=Math.min(min,aux(n-i,heights,k)+Math.abs(heights[n]-heights[n-i]));
+            }
+		return min;
+	}
+    public static int frogJump(int n, int heights[], int k) {
+
+        // Write your code here..
+		//In terms of index i have to reach n-1 stair
+		return aux(n-1,heights,k);
+    }
+}
+public class Solution {
+	public static int aux(int n, int heights[])
+	{
+		if(n==0)
+			return 0;
+            int max=heights[n];
+            for(int i=2;i<=n;i++)
+            {
+                if(n-i>=0)
+                max=Math.min(max,aux(n-i,heights)+heights[n-i]);
+            }
+		return min;
+	}
+    public static int frogJump(int n, int heights[], int k) {
+
+        // Write your code here..
+		//In terms of index i have to reach n-1 stair
+        int max=Integer.Min_VALUE;
+        for(int l=0;l<n;l++)
+        {
+            max=Math.max(max,aux(l,heights));
+        }
+		return max,
+    }
+}
+
+
+//TC=O(N*K) SC=O(N)+O(N)
+public class Solution {
+	public static int aux(int n, int heights[],k, int dp[])
+	{
+		if(n==0)
+			return 0;
+        if(dp[n]!=-1)
+            return dp[n];
+            int min=Integer.MAX_INT;
+            for(int i=1;i<=k;i++)
+            {
+                if(n-i>=0)
+                min=Math.min(min,aux(n-i,heights,k)+Math.abs(heights[n]-heights[n-i]));
+            }
+		return dp[n]=min;
+	}
+    public static int frogJump(int n, int heights[], int k) {
+
+        // Write your code here..
+		//In terms of index i have to reach n-1 stair
+        int dp[]=new int[n];
+		for(int i=0;i<n;i++)
+			dp[i]=-1;
+		return aux(n-1,heights,k,dp);
+    }
+}
+
+//TABULATION
+//TC=O(N) SC=O(N)
+public class Solution {
+
+    public static int frogJump(int n, int heights[], int k) {
+
+        // Write your code here..
+		//In terms of index i have to reach n-1 stair
+        int dp[]=new int[n];
+        dp[0]=0;
+       
+		for(int i=1;i<n;i++)
+        {
+            int min=Integer.MAX_INT;
+            for(int j=1;j<=k;j++)
+            {
+                if(i-j>=0)
+                dp[i]=Math.min(min,dp[i-j]+Math.abs(heights[i]-heights[i-j]));
+            }
+        }
+        return dp[n-1];
+    }
+}
+
+
+

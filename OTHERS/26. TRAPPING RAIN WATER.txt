@@ -1,0 +1,85 @@
+//TRAPPING RAIN WATER
+/*
+IDEA: THE WATER THAT CAN BE STORED BY EACH BLOCK IS 
+MIN(Max(Height on left), Max(Height on right))
+*/
+//BRUTE FORCE TC=O(N*2) SC=O(1)
+class Solution {
+    public int trap(int[] height) {
+        int water=0;
+        int n=height.length;
+        for(int i=0;i<n;i++)
+        {
+            int maxLeft=height[i];
+            int maxRight=height[i];
+            for(int j=0;j<i;j++)
+                maxLeft=Math.max(maxLeft,height[j]);
+            for(int j=i+1;j<n;j++)
+                maxRight=Math.max(maxRight,height[j]);
+            water+=Math.min(maxLeft,maxRight)-height[i];     
+        }
+        return water;
+    }
+}
+
+//BETTER, PRE COMPUTE THE MAXlEFT AND MAXRIGHT AND STORE IT IN ARRAYS
+//tc=o(n) sc=o(n)
+
+class Solution {
+    public int trap(int[] height) {
+        int water=0;
+        int n=height.length;
+        int left[]=new int[n];
+        int right[]=new int[n];
+        left[0]=height[0];
+        right[n-1]=height[n-1];
+        for(int i=1;i<n;i++)
+        {
+            left[i]=Math.max(left[i-1],height[i]);
+         
+        }
+        for(int i=n-2;i>=0;i--)
+        {
+            right[i]=Math.max(right[i+1],height[i]);
+        }
+        for(int i=0;i<n;i++)
+        {
+            water+=Math.min(left[i],right[i])-height[i];     
+        }
+        return water;
+    }
+}
+
+//optimal
+//TC=O(N) SC=O(1)
+class Solution {
+    public int trap(int[] height) {
+        int water=0;
+        int n=height.length;
+        int low=0;
+        int high=n-1;
+        int leftMax=0;
+        int rightMax=0;
+        while(low<=high)
+        {
+            if(height[low]<=height[high])
+            {
+                if(height[low]>=leftMax)
+                leftMax=height[low];
+                else
+                water+=leftMax-height[low];
+                low++;
+            }
+            else
+            {
+                if(height[high]>=rightMax)
+                rightMax=height[high];
+                else
+                water+=rightMax-height[high];
+                high--;
+            }
+        }
+        return water;
+
+    }
+}    

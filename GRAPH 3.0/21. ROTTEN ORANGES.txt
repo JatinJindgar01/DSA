@@ -1,0 +1,73 @@
+//ROTTEN ORANGES
+//TC=O(N*M*4)
+//S=O(N*M)
+class Pair
+{
+    int i;
+     int j;
+    Pair(int i, int j)
+    {
+        this.i=i;
+        this.j=j;
+    }
+}
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        Queue<Pair> q=new LinkedList<>();
+        int countFresh=0;
+        int countRotten=0;
+        int n=grid.length;
+        int m=grid[0].length;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(grid[i][j]==2)
+                {
+                    countRotten++;
+                    q.add(new Pair(i,j));
+                }
+                if(grid[i][j]==1)
+                    countFresh++;
+            }
+        }
+        if(countFresh==0)  //if no fresh orange, return 0
+            return 0;
+        if(countRotten==0 && countFresh!=0)  //if no rotten orange but fresh orange is present so return -1;
+            return -1;
+        int ni[]={-1,1,0,0};
+        int nj[]={0,0,-1,1};
+        int ans=0;
+        while(q.size()>0)
+        {
+            int len=q.size();
+            boolean freshOrangeFound=false;  //whether a orange has been rootened in this second or not
+            for(int i=0;i<len;i++)
+            {
+                Pair p=q.poll();
+                for(int j=0;j<4;j++)
+                {
+                    int nextRow=p.i+ni[j];
+                    int nextCol=p.j+nj[j];
+                    if(nextRow>=0 && nextRow<n && nextCol>=0 && nextCol<m && grid[nextRow][nextCol]==1 )
+                    {
+                        freshOrangeFound=true;    //atleast one orange rotten in this second
+                        countFresh--;  //NO of fresh orange is reduces
+                        grid[nextRow][nextCol]=2;  //mark it roten
+                        q.add(new Pair(nextRow, nextCol));
+                    }
+                }
+            }
+            if(freshOrangeFound==true)   //if only atleast one element has been rotten in the looop so increment the ans
+                ans++;
+            
+        }
+        
+        if(countFresh!=0)  //some feash oranges left
+            return -1;
+        else 
+            return ans;
+        
+        
+    }
+}

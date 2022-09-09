@@ -1,0 +1,47 @@
+//CYCLE DETECTION IN AN DIRECTED GRAPH USING DFS
+//TC=O(N+E) SC=O(N)+O(N)+O(N)---> RECURSION STACK, VISITED, DFSVISITED ARRAY 
+
+class Solution {
+    public boolean isCycle(int i, ArrayList<ArrayList<Integer>> adj, boolean visited[], boolean dfsVisited[])
+    {
+        visited[i]=true;
+        dfsVisited[i]=true;
+        for(int j=0;j<adj.get(i).size();j++)
+        {
+            int child=adj.get(i).get(j);
+            if(visited[child]==false)
+            {
+                if(isCycle(child,adj,visited,dfsVisited)==true)
+                    return true;
+            }
+            else if(dfsVisited[child]==true)
+            {
+                return true;
+            }
+        }
+        dfsVisited[i]=false;
+        return false;
+    }
+    // Function to detect cycle in a directed graph.
+    public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
+        // code here
+        //2 VISITED ARRAYS WILL BE USED, VISITED WILL KEEP TRACK OF ALL THE VISITED NODES, DFSVISITED WILL
+        //KEEP TRACK OF ALL THE NODE VISITED IN THE CURRENT MOVEMENT, WHEN WE MOVE BACK FROM A NODE
+        //EG WHEN NO MORE CHILD NODES ARE THERE FOR NODE N, WE MOVE TO WHERE WE CAME FROM
+        //IN THAT CASE WE UNMARK THE NODE IN DFS VISITED ARRAY, AS WE ARE NOW MOVING BACK, CURRENT MOVEMENT HAS CHANGED DIRECTION
+        //CONDITION FOR CYCLE
+        //VISITED[CHILD]==TRUE AND DFSVISITED[CHILD]==TRUE
+        boolean visited[]=new boolean[V];
+        boolean dfsVisited[]=new boolean[V];
+        for(int i=0;i<V;i++)
+        {
+            if(visited[i]==false)
+            {
+                if(isCycle(i,adj,visited,dfsVisited)==true)
+                    return true;
+            }
+        }
+        return false;
+        
+    }
+}

@@ -1,0 +1,89 @@
+//CLONE A LINKEDLIST
+
+//TC=O(N) SC=O(N)
+
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+class Solution {
+    public Node copyRandomList(Node head) {
+        //USING HASMAP<OLDnode, newnode)
+        //create new nodes and set nextpoiter and store pairs in hashmap
+        //traverse again and set random pointers using hasjmap for fing new nodes
+        
+        HashMap<Node,Node> h=new HashMap<>();
+        Node t=head;
+        Node newHead=new Node(0);
+        Node tmp=newHead;
+        while(t!=null)
+        {
+            Node n=new Node(t.val);
+            tmp.next=n;
+            tmp=tmp.next;
+             h.put(t,n);
+            t=t.next;
+           
+        }
+        t=head;
+        tmp=newHead.next;
+        while(t!=null)
+        {
+            Node newRandom=h.get(t.random);
+            tmp.random=newRandom;
+            tmp=tmp.next;
+            t=t.next;
+        }
+        return newHead.next;
+        
+    }
+}
+
+
+//TC=O(N) SC=O(1)
+class Solution {
+    public Node copyRandomList(Node head) {
+        //3 steps
+        //make new nodes and set orignalNode.next=newNode  and newNode.next=orignalNode.next
+        //set random pointers    orignalNode.next.random=orignalNode.random.next
+        //set next pointers      tmp.next=orignalNode.next and orignal.next=f;
+        
+        Node t=head;
+        while(t!=null)
+        {
+            Node w=new Node(t.val);
+            Node nextNode=t.next;
+            t.next=w;
+            w.next=nextNode;
+            t=nextNode;
+            
+        }
+        t=head;
+        while(t!=null)
+        {
+            if(t.random!=null)
+                t.next.random=t.random.next;
+            t=t.next.next;
+        }
+        Node newHead=new Node(0);
+        Node tmp=newHead;
+        t=head;
+        while(t!=null)
+        {
+            Node f=t.next.next;
+            tmp.next=t.next;
+            tmp=tmp.next;
+            t.next=f;
+            t=t.next;
+        }
+        return newHead.next;
+        
+    }
+}

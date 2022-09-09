@@ -1,0 +1,52 @@
+//CHECK IF GRAPH IS BIPARTITE USING BFS
+//TC=O(N+E) SC=O(N)
+/*A GRAPH IS A BIPARTITE IF IT CAN BE COLORED WITH ONLY 2 COLORS SAY 0 AND 1 AND ALL THE ADJACENT NODES ARE HAVING
+ALTERNATE COLORS. 
+A GRAPH HAVING A ODD LENGTH CYCLE IS NOT BIPARTITE.
+TO CHK IF A GRAPH IS BIPARTITE, WE WILL USE A COLOR ARRAY WHICH WILL KEEP TRACK OF COLOR OF NODES, IT WILL
+ALSO ACT AS OUR VISITED ARRAY. INITIALLY NO NODE IS COLORED, SO MARK COLOR AS -1 FOR EVERYONE
+NODE DO BFS, COLOR THE SOURCE WITH AND FOR NEIGHOURS OF ANY NODE, IF CHILD IS NOT COLORED, COLOR IT WITH OPPOSITE
+COLOR AS THAT OF NODE. IF A CHILD IS VISITED AND IT HAS SAME COLOR AS NODE, THEN RETURN FALSE S GRAPH IS NOT BIPARITE.
+*/
+class Solution
+{
+    public boolean checkBfs(int i, ArrayList<ArrayList<Integer>>adj, int color[] )
+    {
+        Queue<Integer> q=new LinkedList<>();
+        q.add(i);
+        color[i]=1;
+        while(q.isEmpty()==false)
+        {
+            int node=q.poll();
+            for(int j=0;j<adj.get(node).size();j++)
+            {
+                int child=adj.get(node).get(j);
+                if(color[child]==-1)
+                {
+                    q.add(child);
+                    color[child]=1-color[node];
+                }
+                else if(color[child]==color[node])
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public boolean isBipartite(int V, ArrayList<ArrayList<Integer>>adj)
+    {
+        // Code here
+        int color[]=new int[V];
+        Arrays.fill(color,-1);
+        for(int i=0;i<V;i++)
+        {
+            if(color[i]==-1)
+            {
+                if(checkBfs(i,adj,color)==false)
+                    return false;
+            }
+        }
+        return true;
+    }
+}

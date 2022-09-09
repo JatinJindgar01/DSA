@@ -1,0 +1,49 @@
+//STARTING POINT OF CYCLE
+//USING HASHSET
+//TC=O(N) SC=O(N)
+
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        if(head==null || head.next==null)
+        return null;
+        HashSet<ListNode> h=new HashSet<>();
+        ListNode tmp=head;
+        while(tmp!=null)
+        {
+            if(h.contains(tmp))
+                return tmp;
+            h.add(tmp);
+            tmp=tmp.next;
+        }
+        return null;
+    }
+}
+
+//SLOW AND FAST POINTER APPROACH
+//TC=O(N)  SC=O(1)
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode slow=head;
+        ListNode fast=head;
+        boolean isCycle=false;
+        while(fast!=null && fast.next!=null)
+        {
+            slow=slow.next;
+            fast=fast.next.next;
+            if(slow==fast)
+            {
+                isCycle=true;
+                break;
+            }
+        }
+        if(isCycle==false)
+            return null;
+        ListNode f=head;
+        while(f!=slow)
+        {
+            f=f.next;
+            slow=slow.next;
+        }
+        return f;
+    }
+}

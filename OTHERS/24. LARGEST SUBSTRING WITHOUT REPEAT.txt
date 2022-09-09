@@ -1,0 +1,54 @@
+//LARGEST SUBSTRING WITHOUT REPEAT
+//TC=O(N*N) SC=O(N)
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+     
+        int max=0;
+        for(int i=0;i<s.length();i++)
+        {
+            HashSet<Character> h=new HashSet<>();
+            for(int j=i;j<s.length();j++)
+            {
+                if(h.contains(s.charAt(j))==true)
+                {
+                    max=Math.max(max,j-i);
+                    break;
+                }
+                else if(j==s.length()-1) // STRING IS OVER THEN ADD ANSWER
+                {
+                     max=Math.max(max,j-i+1);
+                    break;
+                }
+                h.add(s.charAt(j));
+            }
+            
+        }
+        
+        return max;
+        
+    }
+}
+
+//BETTER SLIDING WINDOW TC=O(N) SC=O(N)
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int n=s.length();
+        int start=0;
+        int gm=0;
+        HashSet<Character> h=new HashSet<>();
+        for(int i=0;i<n;i++)
+        {
+            char ch=s.charAt(i);
+            while(h.contains(ch)==true)
+            {
+                h.remove(s.charAt(start));
+                start++;
+            }
+            h.add(ch);
+            gm=Math.max(gm,i-start+1);
+        }
+        return gm;
+    }
+}

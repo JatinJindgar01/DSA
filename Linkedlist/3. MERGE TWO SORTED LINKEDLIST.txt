@@ -1,0 +1,85 @@
+//MERGE TWO SORTED LINKEDLIST
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+//TC=O(N) SC=O(1)
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode tmp=new ListNode();
+        ListNode res=tmp;
+        while(list1!=null && list2!=null)
+        {
+            if(list1.val<=list2.val)
+            {
+                ListNode l=new ListNode();
+                l.val=list1.val;
+                res.next=l;
+                res=res.next;
+                list1=list1.next;
+            }
+            else
+            {
+                ListNode l=new ListNode();
+                l.val=list2.val;
+                res.next=l;
+                res=res.next;
+                list2=list2.next;
+            }
+        }
+        while(list1!=null)
+        {
+            ListNode l=new ListNode();
+                l.val=list1.val;
+                res.next=l;
+                res=res.next;
+            list1=list1.next;
+        }
+        while(list2!=null)
+        {
+            ListNode l=new ListNode();
+                l.val=list2.val;
+                res.next=l;
+                res=res.next;
+            list2=list2.next;
+        }
+        return tmp.next;
+
+    }
+}
+
+
+
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode newHead=new ListNode();
+        ListNode tmp=newHead;
+        while(list1!=null && list2!=null)
+        {
+            if(list1.val<=list2.val)
+            {
+                tmp.next=list1;
+                tmp=tmp.next;
+                list1=list1.next;
+            }
+            else
+            {
+                tmp.next=list2;
+                tmp=tmp.next;
+                list2=list2.next;
+            }
+        }
+        if(list1!=null)
+            tmp.next=list1;
+        if(list2!=null)
+            tmp.next=list2;
+        return newHead.next;
+        
+    }
+}

@@ -1,0 +1,44 @@
+//COUNT NO OF SUBARRAYS WITH GIVEN XOR
+//brute tc=o(n*n) sc=o(1)
+
+public class Solution {
+    public int solve(int[] A, int x) {
+        int count=0;
+        int n=A.length;
+        for(int i=0;i<n;i++)
+        {
+            int xor=0;
+            for(int j=i;j<n;j++)
+            {
+                xor=xor^A[j];
+                if(xor==x)
+                count++;
+            }
+        }
+        return count;
+    }
+}
+
+//BETTER HASHMAP
+//TC=O(N) SC=O(N)
+
+public class Solution {
+    public int solve(int[] A, int x) {
+        int n=A.length;
+        int count=0;
+        HashMap<Integer,Integer> h=new HashMap<>();
+        h.put(0,1);
+        int xor=0;
+        for(int i=0;i<n;i++)
+        {
+            xor=xor^A[i];
+            if(h.containsKey(xor^x))
+            {
+                count=count+h.get(xor^x);
+            }
+            h.put(xor,h.getOrDefault(xor,0)+1);
+            
+        }
+        return count;
+    }
+}

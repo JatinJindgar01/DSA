@@ -1,0 +1,55 @@
+//NEXT GREATER PERMUTATION
+//TC=O(N) SC=O(1)
+
+STEPS
+WHAT WE NOTICE IS THAT IN EVERY PERMUTATION IF WE TRAVERSE FROM RIGHT
+THERE IS ALWAYS A INCRESING SEQUENCE FOR SOME TIME. IE IT IS INCREASING
+UPTO A POINT AS WE MOVE FROM RIGHT TO LEFT
+
+1) TRAVERSE FROM RIGHT AND FIND THE BREAK POINT
+IE. THE FIRST ELEMENT FOR WHICH A[I]<A[I+1]
+2) IF BREAK POINT IS FOUND THEN FIND THE JUST GREATER ELEMENT THAN THE BP BY TRAVERSING FROM RIGHT
+3) SWAP NUMS[I] AND NUMS[J]
+4) REVERSE/SORT THE ARRAY AFTER I SO THAT WE GET MINIMAL NEXT PERMUTATION. RIGHT NOW ARRAY IS IN DESCENDING ORDER AFTER I. 
+SO REVERSING IT WILL MAKE IT IN ASCENDING ORDER
+
+class Solution {
+    public void swap(int nums[], int i, int j)
+    {
+         int temp=nums[i];
+            nums[i]=nums[j];
+            nums[j]=temp;
+    }
+    public void nextPermutation(int[] nums) {
+        if(nums.length==0 || nums.length==1)
+            return ;
+        //FIND THE BREAK POINT WHERE A[I]<A[I+1]
+        int i=nums.length-2;
+        while(i>=0 && nums[i]>=nums[i+1])
+        {
+            i--;
+        }
+        
+        if(i>=0) //breakpoint found
+        {
+            //FIND THE INDEX OF SMALLEST ELEMENT ON RIGHT OF I greater THAN I
+        int j=nums.length-1;
+        while(j>=0 && nums[j]<=nums[i])
+        {
+            j--;
+        }   
+            //SWAP NUMS[I] AND NUMS[J]
+           swap(nums,i,j);
+        }
+        //REVERSE THE ARRAY AFTER I SO AS TO GET THE MINIMUM NEXT PERMUTATION
+        int l=i+1;
+        int r=nums.length-1;
+        while(l<r)
+        {
+            swap(nums,l,r);
+            l++;
+            r--;
+        }
+        
+    }
+}

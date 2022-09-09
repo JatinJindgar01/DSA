@@ -1,0 +1,112 @@
+// GRID UNIQUE PATHS
+//TC= 2^n SC=O(n)
+// recursive
+
+class Solution {
+    public int fun(int i, int j, int m, int n)
+    {
+        if(i==m || j==n)
+            return 0;
+        if(i==m-1 && j==n-1)
+            return 1;
+        return fun(i,j+1,m,n)+fun(i+1,j,m,n);
+    }
+    public int uniquePaths(int m, int n) {
+        return fun(0,0,m,n);
+    }
+}
+
+//MEMORIZATION
+//TC=O(N*M) SC=O(N*M)
+
+class Solution {
+    public int fun(int i, int j, int m, int n,int dp[][])
+    {
+        if(i==m || j==n)
+            return 0;
+        if(dp[i][j]!=-1)
+            return dp[i][j];
+        if(i==m-1 && j==n-1)
+            return 1;
+        return dp[i][j]=fun(i,j+1,m,n,dp)+fun(i+1,j,m,n,dp);
+    }
+    public int uniquePaths(int m, int n) {
+        int dp[][]=new int[m][n];
+        for(int i=0;i<m;i++)
+        Arrays.fill(dp[i],-1);
+        return fun(0,0,m,n,dp);
+    }
+}
+
+//BOTTOM UP DP
+// TC=O(N*M) SC=O(N*M)
+ 
+class Solution {
+    
+    public int uniquePaths(int m, int n) {
+        int dp[][]=new int[m+1][n+1];
+        for(int i=m;i>=0;i--)
+        {
+            for(int j=n;j>=0;j--)
+            {
+                if(i==m || j==n)
+                    dp[i][j]=0;
+                else if(i==m-1 && j==n-1)
+                    dp[i][j]=1;
+                else
+                {
+                    dp[i][j]=dp[i][j+1]+dp[i+1][j];
+                }
+            }
+        }
+        return dp[0][0];
+    }
+}
+
+//BOTTOM UP DP SAPCE OPTIMIZED
+//TC =O(N*M) SC=O(N)
+class Solution {
+    
+    public int uniquePaths(int m, int n) {
+    
+        int prev[]=new int[n+1];
+       
+        for(int i=m;i>=0;i--)
+        {
+             int curr[]=new int[n+1];
+            for(int j=n;j>=0;j--)
+            {
+                if(i==m || j==n)
+                    curr[j]=0;
+                else if(i==m-1 && j==n-1)
+                    curr[j]=1;
+                else
+                {
+                    curr[j]=curr[j+1]+prev[j];
+                }
+            }
+            prev=curr;
+        }
+        return prev[0];
+    }
+}
+
+//BEST BUT NOT WORKING FOR LARGER INPUTS
+//TC =O(N) SC=O(1)
+
+class Solution {
+    public int factorial(int n, int r)
+    {
+        long fact=1;
+        for(int i=0;i<r;i++)
+        {
+            fact=fact*(n-i);
+            fact=fact/(i+1);
+        }
+        return (int)fact;
+
+    }
+    public int uniquePaths(int m, int n) {
+       return factorial(m+n-2,m-1);
+    }
+}

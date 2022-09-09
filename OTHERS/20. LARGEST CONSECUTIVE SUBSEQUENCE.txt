@@ -1,0 +1,58 @@
+// LARGEST CONSECUTIVE SUBSEQUENCE
+// USING SORTING AND CONSATNT SPACE
+// TC=O(NLOGN) SC=O(1)
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        if(nums.length==0)
+            return 0;
+        Arrays.sort(nums);
+        int n=nums.length;
+        int lm=1;
+        int gm=1;
+        for(int i=1;i<n;i++)
+        {
+            if(nums[i]==nums[i-1]+1)
+            {
+                lm++;
+            }
+            else if(nums[i]!=nums[i-1])
+            {
+                lm=1;
+            }
+            gm=Math.max(lm,gm);
+        }
+        return gm;
+    }
+}
+
+
+//better in time but take linear space
+// HASHSET 
+//TC=O(N) SC=O(N)
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        HashSet<Integer> h=new HashSet<>();
+        int n=nums.length;
+        for(int i=0;i<n;i++)
+            h.add(nums[i]);
+        int gm=0;
+        int lm=0;
+        for(int i=0;i<n ;i++)
+        {
+            if(h.contains(nums[i]-1)==false)
+            {
+                int ele=nums[i];
+                while(h.contains(ele))
+                {
+                   
+                    lm++;
+                    ele++;
+                }
+                gm=Math.max(gm,lm);
+                lm=0;
+            }
+                
+        }
+        return gm;
+    }
+}

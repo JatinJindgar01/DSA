@@ -1,0 +1,40 @@
+//PALINDROME PARTIONING
+//TC=O(2^N)*(N/2){FOR CHECKING PALINDROME} SC=O(NO OF PALINDROMES)
+
+class Solution {
+    public void fun(int i, String s,  List<List<String>> ans,ArrayList<String> ds)
+    {   if(i==s.length())
+    {
+        ArrayList<String> a=new ArrayList<>(ds);
+        ans.add(a);
+    }
+        
+        for(int index=i;index<s.length();index++)
+        {
+            if(isPalin(s,i,index))
+            {
+                ds.add(s.substring(i,index+1));
+                fun(index+1,s,ans,ds);
+                ds.remove(ds.size()-1);
+            }
+           
+}
+    }
+    boolean isPalin(String s, int s1, int s2)
+    {
+        while(s1<s2)
+        {
+            if(s.charAt(s1)!=s.charAt(s2))
+                return false;
+            s1++;
+            s2--;
+        }
+        return true;
+    }
+    public List<List<String>> partition(String s) {
+        ArrayList<String> ds=new ArrayList<>();
+        List<List<String>> ans=new ArrayList<>();
+         fun(0,s,ans,ds);
+        return ans;
+    }
+}

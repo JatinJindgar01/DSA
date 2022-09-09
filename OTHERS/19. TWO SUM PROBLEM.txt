@@ -1,0 +1,276 @@
+// 2 SUM PROBLEM
+// ---------------------INDICES-------------------------------//
+//ONLY ONE ANSWER IS PRESENT, RETURN THE INDICES
+// We can't use sorting here, as indices will be distorted
+//brute TC=O(N*N) SC=O(1)
+
+    public int[] twoSum(int[] nums, int target) {
+        
+        for(int i=0;i<nums.length;i++)
+        {
+            for(int j=i+1;j<nums.length;j++)
+            {
+                if(nums[i]+nums[j]==target)
+                {
+                   return new int[]{i,j};
+                }
+            }
+        }
+        int ans[]=new int[2];
+        return ans;
+    }
+
+//BETTER HASHMAP TC=O(N) SC=O(N)
+
+        public int[] twoSum(int[] nums, int target) {
+           HashMap<Integer,Integer> h=new HashMap<>();
+            for(int i=0;i<nums.length;i++)
+            {
+                int remaining=target-nums[i];
+                if(h.containsKey(remaining))
+                    return new int[]{i,h.get(remaining)};
+                h.put(nums[i],i);
+            }
+            int ans[]=new int[2];
+            return ans;
+    }
+
+
+// MULTIPLE ANSWERS CAN BE THERE, RETURN ALL
+
+//brute TC=O(N*N) SC=O(1)
+
+public List<List<Integer>> twoSum(int[] nums, int target) {
+    List<List<Integer>> ans=new ArrayList<>();
+    for(int i=0;i<nums.length;i++)
+    {
+        for(int j=i+1;j<nums.length;j++)
+        {
+            if(nums[i]+nums[j]==target)
+            {
+              List<Integer> tmp=new ArrayList<>();
+              tmp.add(i);
+              tmp.add(j);
+              ans.add(tmp);
+            }
+        }
+    }
+
+    return ans;
+}
+
+//BETTER HASHMAP TC=O(N*N) SC=O(N)
+
+public List<List<Integer>> twoSum(int[] nums, int target) {
+    HashMap<Integer,List<Integer>> h=new HashMap<>();
+    List<List<Integer>> ans=new ArrayList<>();
+     for(int i=0;i<nums.length;i++)
+     {
+         int remaining=target-nums[i];
+         if(h.containsKey(remaining))
+            {
+            List<Integer> hlist=h.get(remaining);
+            for(int k=0;k<hlist.size();k++)
+            {
+                List<Integer> tmp=new ArrayList<>();
+                tmp.add(i);
+                tmp.add(hlist.get(k));
+                ans.add(tmp);
+            }
+            }
+            if(h.containsKey(nums[i]))
+            {
+               List<Integer> l= h.get(nums[i]);
+               l.add(i);
+               h.put(nums[i],l);
+            }
+            else
+            {
+                List<Integer> l=new ArrayList<>();
+                l.add(i);
+                h.put(nums[i],l);
+            }
+     }
+     return ans;
+    
+}
+
+//---------------------------------------VALUE------------------------------------//
+
+//SINGLE ANSWER
+//brute TC=O(N*N) SC=O(1)
+
+public int[] twoSum(int[] nums, int target) {
+        
+    for(int i=0;i<nums.length;i++)
+    {
+        for(int j=i+1;j<nums.length;j++)
+        {
+            if(nums[i]+nums[j]==target)
+            {
+               return new int[]{nums[i],nums[j]};
+            }
+        }
+    }
+    int ans[]=new int[2];
+    return ans;
+}
+
+//BETTER HASHMAP TC=O(N) SC=O(N)
+
+public int[] twoSum(int[] nums, int target) {
+    HashMap<Integer,Integer> h=new HashMap<>();
+     for(int i=0;i<nums.length;i++)
+     {
+         int remaining=target-nums[i];
+         if(h.containsKey(remaining))
+             return new int[]{nums[i],remaining};
+         h.put(nums[i],i);
+     }
+     int ans[]=new int[2];
+     return ans;
+}
+
+//OPTIMAL SORTING TC=O(NLOGN)  SC=O(1)
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+               int low=0;
+               int high=nums.length-1;
+               while(low<high)
+               {
+                   
+                   if(nums[low]+nums[high]==target)
+                   {
+                       return new int[]{nums[low],nums[high]};
+                   }
+                   else if(nums[low]+nums[high]<target)
+                   {
+                       low++;
+                   }
+                   else
+                   {
+                       high--;
+                   }
+               }
+            int ans[]=new int[2];
+            return ans;
+    }
+}
+
+
+//MULTIPLE ANSWERS ARE THERE, PRINT ALL UNIQUE PAIRS
+
+//brute TC=O(N*N) SC=O(1)
+public List<List<Integer>> twoSum(int[] nums, int target) {
+    List<List<Integer>> ans=new ArrayList<>();
+    HashSet<List<Integer>> hset=new HashSet<>();
+    for(int i=0;i<nums.length;i++)
+    {
+        for(int j=i+1;j<nums.length;j++)
+        {
+            if(nums[i]+nums[j]==target)
+            {
+              List<Integer> tmp=new ArrayList<>();
+              tmp.add(nums[i]);
+              tmp.add(nums[j]);
+              hset.add(tmp);
+            //   if(ans.contains(tmp)==false)
+            //   ans.add(tmp);
+            }
+        }
+    }
+    Iterator it=hset.iterator();
+    while(it.hasNext())
+    {
+        List<Integer> hg=(List<Integer>)it.next();
+        ans.add(hg);
+    }
+
+    return ans;
+}
+
+
+//BETTER HASHMAP TC=O(N) SC=O(N)
+
+public List<List<Integer>> twoSum(int[] nums, int target) {
+    HashMap<Integer,Integer> h=new HashMap<>();
+    List<List<Integer>> ans=new ArrayList<>();
+    HashSet<List<Integer>> hset=new HashSet<>();
+     for(int i=0;i<nums.length;i++)
+     {
+         int remaining=target-nums[i];
+         if(h.containsKey(remaining))
+            {
+              List<Integer> tmp=new ArrayList<>();
+              tmp.add(nums[i]);
+              tmp.add(nums[j]);
+              hset.add(tmp);
+            //   if(ans.contains(tmp)==false)
+            //   ans.add(tmp);
+            }
+         h.put(nums[i],i);
+     }
+     Iterator it=hset.iterator();
+    while(it.hasNext())
+    {
+        List<Integer> hg=(List<Integer>)it.next();
+        ans.add(hg);
+    }
+
+    return ans;
+     
+}
+
+//OPTIMAL SORTING
+// TC=O(NLOGN) SC=O(1)
+ 
+public List<List<Integer>> twoSum(int nums[])
+{
+    int n=nums.length;
+    if(n==0)
+    {
+        List<List<Integer>> l=new ArrayList<>();
+            return l;
+    }
+    Arrays.sort(nums);
+    List<List<Integer>> ans=new ArrayList<>();
+    int i=0;
+    int j=n-1;
+    while(i<j)
+    {
+        if(i==0 || nums[i]!=nums[i-1])
+        {
+            if(nums[i]+nums[j]==target)
+            {
+                List<Integer> t=new ArrayList<>();
+                   t.add(nums[i]);
+                   t.add(nums[j]);
+                   ans.add(t);
+                   i++;
+            }
+            else if(nums[i]+nums[j]<target)
+            {
+                i++;
+            }
+            else{
+                j--;
+            }
+        }
+        else
+        {
+            i++;
+        }
+    }
+    return ans;
+}
+
+
+
+
+
+
+
+    
+
+

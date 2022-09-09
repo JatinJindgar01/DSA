@@ -1,0 +1,65 @@
+//FLOOD FILL
+
+Time complexity: O(M x N).
+Auxiliary Space: O(M x N)+ O(M x N)
+
+//using visited array
+class Solution {
+    public void dfs(int i, int j, int[][] grid, boolean[][] visited, int ni[], int nj[], int color, int orignal_color)
+    {
+        visited[i][j]=true;
+        grid[i][j]=color;
+        for(int k=0;k<4;k++)
+        {
+            int nextRow=i+ni[k];
+            int nextCol=j+nj[k];
+            if(nextRow>=0 && nextRow<grid.length && nextCol>=0 && nextCol<grid[0].length && visited[nextRow][nextCol]==false && grid[nextRow][nextCol]==orignal_color)
+            {
+                 dfs(nextRow,nextCol,grid,visited,ni,nj,color,orignal_color);
+            }
+        }
+       
+    }
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        boolean visited[][]=new boolean[image.length][image[0].length];
+        int ni[]={-1,1,0,0};
+        int nj[]={0,0,-1,1};
+        dfs(sr,sc,image,visited,ni,nj,color,image[sr][sc]);
+        return image;
+    }
+}
+
+
+//WITHOUT VISITED ARRAY
+
+
+Time complexity: O(M x N).
+Auxiliary Space: O(M x N)
+
+
+class Solution {
+    public void dfs(int i, int j, int[][] grid, int ni[], int nj[], int color, int orignal_color)
+    {
+    
+        grid[i][j]=color;
+        for(int k=0;k<4;k++)
+        {
+            int nextRow=i+ni[k];
+            int nextCol=j+nj[k];
+            if(nextRow>=0 && nextRow<grid.length && nextCol>=0 && nextCol<grid[0].length &&  grid[nextRow][nextCol]==orignal_color)
+            {
+                 dfs(nextRow,nextCol,grid,ni,nj,color,orignal_color);
+            }
+        }
+       
+    }
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+    
+        int ni[]={-1,1,0,0};
+        int nj[]={0,0,-1,1};
+        if(image[sr][sc]==color)
+            return image;
+        dfs(sr,sc,image,ni,nj,color,image[sr][sc]);
+        return image;
+    }
+}

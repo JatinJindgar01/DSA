@@ -1,0 +1,66 @@
+//SHORTEST PATH IN DAG, WEIGHTED
+//TC=O(n+E) SC=O(n)
+
+import java.util.*;
+class Pair
+{
+    int v;
+    int weight;
+    Pair(int v, int weight)
+    {
+        this.v=v;
+        this.weight=weight;
+    }
+}
+class Main
+{
+    void topologicalSortUtil(int node, boolean visited[], Stack<Integer> stack, ArrayList<ArrayList<Pair>> adj)
+    {
+        visited[node]=true;
+        for(int j=0;j<adj.get(node).size();j++)
+        {
+            Pair child=adj.get(node).get(j);
+            if(visited[child.v]==false)
+                topologicalSortUtil(child.v,visited,stack,adj);
+        }
+        stack.add(node);
+    }
+    
+    void shortestPath(int s,ArrayList<ArrayList<Pair>> adj, int N)
+    {
+        Stack stack=new Stack();
+        boolean visited[]=new boolean[N];
+        for(int i=0;i<N;i++)
+        {
+            if(visited[i]==false)
+                topologicalSortUtil(i,visited,stack,adj);
+        }
+
+        int dist[]=new int[N];
+        for(int i=0;i<N;i++)
+            dist[i]=Integer.MAX_VALUE;
+        dist[s]=0;
+        while(st.empty()==false)
+        {
+            int node=stack.pop();
+            if(dist[node]!=Integer.MAX_VALUE)
+            {
+                for(int j=0;j<adj.get(node).size();j++)
+                {
+                    Pair child=adj.get(node).get(j);
+                    if(dist[node]+child.weight<dist[child.v])
+                        dist[child.v]=dist[node]+child.weight;
+                }
+            }
+        }
+        for(int i=0;i<N;i++)
+        {
+            if(dist[i]==Integer.MAX_VALUE)
+                System.out.println("NOT REACHABLE");
+            else
+                System.out.println(dist[i]+" ");
+        }
+
+
+    }
+}

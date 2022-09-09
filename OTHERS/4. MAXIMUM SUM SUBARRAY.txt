@@ -1,0 +1,40 @@
+//MAXIMUM SUM SUBARRAY
+
+// TC=O(N*N) SC=O(1)
+class Solution {
+    //Brute Force Time O(n*n) and Space O(1)
+    public int maxSubArray(int[] nums) {
+        int n=nums.length;
+        int globalSum=Integer.MIN_VALUE;
+         int localSum=0;
+        for(int i=0;i<n;i++)
+        {
+            
+            for(int j=i;j<n;j++)
+            {   
+                localSum+=nums[j];
+                globalSum=Math.max(localSum,globalSum);
+            }
+            localSum=0;
+        }
+        return globalSum;
+    }
+}
+
+//KADANE'S ALGORITHM
+// TC=O(N)  SC=O(1)
+//MAXIMUM SUM SUBARRAY ENDING AT EVERY INDEX
+class Solution {
+public int maxSubArray(int[] nums) {
+        int n=nums.length;
+        int globalSum=nums[0];
+        int local=nums[0];
+        for(int i=1;i<n;i++)
+        {   
+            local=Math.max(local+nums[i],nums[i]);
+            globalSum=Math.max(local,globalSum);
+        }
+        return globalSum;
+    }
+}
+    

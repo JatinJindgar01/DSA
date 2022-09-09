@@ -1,0 +1,41 @@
+//STOCK SPAN PROBLEM
+//TC=O(N)
+SC=O(N)
+class StockSpanner {
+    Stack<Integer> st;  //stack
+    ArrayList<Integer> adj; //to store price array
+    int i;  //to keep track of current index
+    public StockSpanner() {
+        st=new Stack<>();
+        adj=new ArrayList<>();
+        i=-1;
+    }
+    
+    public int next(int price) {
+        i++;   //new element comes, increse index
+        int ans=1;   //1 is minimum answer
+        adj.add(price);  //add element to adj
+        if(i==0)          //first element has com
+        {   
+            st.push(i);
+            return i+1;
+        }
+        while(st.size()!=0 && adj.get(st.peek())<=price )
+            st.pop();
+        if(st.size()==0)
+            ans=i+1;
+        else
+        {
+            int index=st.peek();
+            ans=i-index;
+        }
+        st.push(i);
+        return ans;
+    }
+}
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner obj = new StockSpanner();
+ * int param_1 = obj.next(price);
+ */

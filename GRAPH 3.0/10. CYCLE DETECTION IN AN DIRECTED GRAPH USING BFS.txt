@@ -1,0 +1,52 @@
+//DETECT CYCLE IN AN DIRECTED GRAPH USING BFS
+//TC=O(N+E) SC=O(N)+O(N)+O(N)
+//KAHN'S ALGORITHM IS USED TO FIND TOPO SORT
+//TOPOLOGICAL SORT IS ONLY POSSIBLE FOR DIRECTED ACYCLIC GRAPH.
+//COUNT NO OF NODES IN TOPOLOGICAL SORT, IF IT IS LESS THAN V, WE CAN'T FORM TOPO SORT, SO CYCLE IS THERE RETURN TRUE, ELSE NO 
+//CYCLE IS THERE RETURN FALSE
+
+class Solution {
+    // Function to detect cycle in a directed graph.
+    public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
+        // code here
+        int indegree[]=new int[V];
+        for(int i=0;i<V;i++)
+        {
+            for(int j=0;j<adj.get(i).size();j++)
+            {
+                int child=adj.get(i).get(j);
+                indegree[child]++;
+            }
+        }
+        //ADD IN QUEUE NODES WITH INDEGREE 0
+        Queue<Integer> q=new LinkedList<>();
+        for(int i=0;i<V;i++)
+        {
+            if(indegree[i]==0)
+                q.add(i);
+        }
+        //ARRAY TO STORE TOPO
+        int topo[]=new int[V];
+        int ind=0;
+        int cnt=0; //to count no of nodes in topo sort
+        while(q.isEmpty()==false)
+        {
+            int node=q.poll();
+            topo[ind]=node;  //ADD IN TOPO SORT
+            ind++;
+            cnt++;  // increase cnt as a node has been added to topo sort
+            for(int j=0;j<adj.get(node).size();j++)   //TRAVERSE OVER CHILDS
+            {
+                int child=adj.get(node).get(j);
+                indegree[child]--;    //REDUCE INDEGREE OF CHILD
+                if(indegree[child]==0)
+                    q.add(child);   //ADD CHILD IN QUEUE IF INDEGREE IS 0
+            }
+            
+        }
+        if(cnt==V)  //if all nodes are in topo sort, ie we can generate a topo sort, no cycle
+            return false;
+        else
+            return true;  // we can't generate topo sort so cycle is there return true
+    }
+}

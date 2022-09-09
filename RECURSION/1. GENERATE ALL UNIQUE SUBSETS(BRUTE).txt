@@ -1,0 +1,25 @@
+//GENERATE ALL UNIQUE SUBSETS
+//TC=SC=O(2^N)
+
+class Solution {
+    void fun(int i, int nums[],HashSet<List<Integer>> ans, List<Integer> ds)
+    {  if(i==nums.length)
+        {
+        ArrayList<Integer> a=new ArrayList<>(ds);
+       Collections.sort(a);
+       ans.add(a);
+           return;
+        }
+        ds.add(nums[i]);
+        fun(i+1,nums,ans,ds);
+        ds.remove(ds.size()-1);
+        fun(i+1,nums,ans,ds);
+    }
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+         List<Integer> ds=new ArrayList<>();
+        HashSet<List<Integer>> ans=new HashSet<>();
+        fun(0,nums,ans,ds);
+        List<List<Integer>> l=new ArrayList<>(ans);
+        return l;
+    }
+}

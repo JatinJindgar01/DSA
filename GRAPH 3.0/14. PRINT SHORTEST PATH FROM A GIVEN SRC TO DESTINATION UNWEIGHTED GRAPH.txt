@@ -1,0 +1,59 @@
+//SHORTEST PATH IN AN UNWEIGHTED GRAPH FROM SOURCE TO DESTINATION, PRINT PATH
+//TC=O(n+E) SC=O(n)
+
+
+import java.util.*;
+public class Solution {
+
+	public static LinkedList<Integer> shortestPath(int[][] edges, int n, int m, int s, int t) {
+		// Write your code here.
+        ArrayList<ArrayList<Integer>> adj=new ArrayList<>(n+1);
+        for(int i=0;i<=n;i++)
+        {
+            adj.add(new ArrayList<>());
+        }
+        for(int i=0;i<edges.length;i++)
+        {
+            int src=edges[i][0];
+            int dest=edges[i][1];
+            adj.get(src).add(dest);
+            adj.get(dest).add(src);
+        }
+        int dist[]=new int[n+1];
+        int par[]=new int[n+1];
+        for(int i=0;i<=n;i++)
+        {
+            dist[i]=Integer.MAX_VALUE;
+            par[i]=-1;
+        }
+        dist[s]=0;
+        Queue<Integer> q=new LinkedList<>();
+        q.add(s);
+        while(q.isEmpty()==false)
+        {
+            int node=q.poll();
+            for(int j=0;j<adj.get(node).size();j++)
+            {
+                int child=adj.get(node).get(j);
+                if(1+dist[node]<dist[child])
+                {
+                    dist[child]=1+dist[node];
+                    par[child]=node;
+                    q.add(child);
+                }
+            }
+        }
+//         for(int i=0;i<par.length;i++)
+//             System.out.print(par[i]+" ");
+        LinkedList<Integer>ans=new LinkedList<>();
+        while(t!=-1)
+        {
+            ans.add(t);
+            t=par[t];
+        }
+        Collections.reverse(ans);
+        //System.out.println(ans);
+        return ans;
+    }
+
+}

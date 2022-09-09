@@ -1,0 +1,37 @@
+//SHORTEST PATH IN AN UNDIRECTED GRAPH and Unweighted(CYCLIC+ACYCLIC)
+//find the shortest path from a single source to all the destinations
+//IN OUR CASE SRC IS 0
+//VISITED ARRAY IS OT REQUIRED AS THE CONDITION dist[node]+1<dist[child]
+WILL NEVER BE TRUE FOR PARENT NODE  OR ANY OTHER NODE IN CYCLE
+//TC=O(N+E) SC=O(N)
+class Solution
+{
+public void shortestPath(ArrayList<Integer>> adj, int V, int src)
+{
+	int dist[]=new int[V];
+	for(int i=0;i<V;i++)
+	{
+		dist[i]=Integer.MAX_VALUE;
+	}
+	Queue<Integer> q=new LinkedList<>();
+	dist[src]=0;
+	q.add(src);
+	while(q.isEmpty()==false)
+	{
+		int node=q.poll();
+		for(int j=0;j<adj.get(node).size();j++)
+		{
+			int child=adj.get(node).get(j);
+			if(dist[node]+1<dist[child])
+			{
+				dist[child]=dist[node]+1;
+				q.add(child);
+			}
+		}
+	}
+	for(int i=0;i<V;i++)
+	{
+		System.out.print(dis[i]+" ");
+	}
+}
+}

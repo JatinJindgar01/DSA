@@ -1,0 +1,34 @@
+//M COLORING PROBLEM
+//TC=M^N SC=O(1)
+class solve 
+{
+    //Function to determine if graph can be coloured with at most M colours such
+    //that no two adjacent vertices of graph are coloured with same colour.
+    public static boolean graphColoring(List<Integer>[] G, int[] color, int i, int m) 
+    {
+        // Your code here
+        int n=G.length;
+        if(i==n)
+        return true;
+        for(int j=1;j<=m;j++)
+        {
+            if(isSafe(G,color,i,j))
+            {
+                color[i]=j;
+                if(graphColoring(G,color,i+1,m)==true)
+                return true;
+                color[i]=0;
+            }
+        }
+        return false;
+    }
+    public static boolean isSafe(List<Integer>[] G, int[] color, int i, int clr)
+    {
+        for(int it:G[i])
+        {
+            if(color[it]==clr)
+            return false;
+        }
+        return true;
+    }
+}

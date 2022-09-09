@@ -1,0 +1,47 @@
+//IMPLEMENT STACK US‌ING ARRAY
+//TC=O(N) SC=O(N)
+//ALL FUNCTIONS WORK IN O(1) TIME
+class Stack
+{
+int max=10000;
+int top=-1;
+int arr[]=new int[max];
+public boolean push(int x)
+{
+if(top==max-1)
+{
+System.out.println("OVERFLOW");
+return false;
+}
+top++;
+arr[top]=x;
+return true;
+}
+public int pop()
+{
+  if(top==-1)
+   return -1;
+    int x=arr[top];
+    top--;
+    return x;
+ }
+
+public boolean isEmpty()
+{
+   return (top==-1);
+}
+
+public boolean size()
+{
+return top+1;
+}
+}
+public class Test
+{
+public static void main(String[] args)
+{
+   Stack st=new Stack();
+   st.push(10);
+st.pop();
+}
+}

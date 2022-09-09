@@ -1,0 +1,23 @@
+//GENERATE ALL UNIQUE SUBSETS BETTER
+//TC=O(2^N*k) SC=O(NO OF UNIQUE SUBSETS)
+class Solution {
+    public void fun(int i, int nums[],  List<List<Integer>> ans,ArrayList<Integer> ds)
+    {  ArrayList<Integer> a=new ArrayList<>(ds);
+        ans.add(a);
+        for(int index=i;index<nums.length;index++)
+        {
+            if(index!=i && nums[index]==nums[index-1])
+                continue;
+            ds.add(nums[index]);
+            fun(index+1,nums,ans,ds);
+            ds.remove(ds.size()-1);
+}
+    }
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        ArrayList<Integer> ds=new ArrayList<>();
+        List<List<Integer>> ans=new ArrayList<>();
+       Arrays.sort(nums);
+        fun(0,nums,ans,ds);
+        return ans;
+    }
+}

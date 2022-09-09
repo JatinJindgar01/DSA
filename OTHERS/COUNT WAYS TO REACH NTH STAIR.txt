@@ -1,0 +1,76 @@
+/*
+WE ARE STANDING AT OTH STAIR.
+ WE NEED TO REACH NTH STAIR. 
+ EVERY TIME WE CAN TAKE 1 OR 2 JUMPS. FIND THE TOTAL NO OF WAYS OF REACHING THE NTH STAIR
+
+*/
+//BRUTE FORCE: RECURSION
+
+class Solution {
+    public int noOfWays(int n) {
+        if(n==0)
+            return 1;
+        if(n==1)
+            return 1;
+        return noOfWays(n-2)+noOfWays(n-1);
+    }
+}
+
+//BETTER: MEMORIZATION
+//TC=O(N) SC=O(N)+O(N)(STACK SPACE +ARRAY)
+class Solution {
+    public int aux(int n, int dp[])
+    {
+        if(n==0)
+            return 1;
+        if(n==1)
+             return 1;
+        if(dp[n]!=-1)
+            return dp[n];
+        return dp[n]=noOfWays(n-2)+noOfWays(n-1);
+    }
+    public int noOfWays(int n) {
+        int dp[]=new int[n+1];
+        for(int i=0;i<=n;i++)
+            dp[i]=-1;
+        return aux(n,dp);
+    }
+}
+
+//OPTIMAL TABULATION
+// TC=O(N) SC=O(N)
+class Solution {
+    public int noOfWays(int n) {
+        if(n==0)
+            return 1;
+        if(n==1)
+             return 1;
+        int dp[]=new int[n+1];
+        dp[0]=1;
+        dp[1]=1;
+        for(int i=2;i<=n;i++)
+            dp[i]=dp[i-2]+dp[i-1];
+        return dp[n];
+    }
+}
+
+// SPACE OPTIMIZATION
+// TC=O(N) SC=O(1)
+class Solution {
+    public int noOfWays(int n) {
+        if(n==0)
+            return 1;
+        if(n==1)
+             return 1;
+        int elementBeforePrevious=1;
+        int previous=1;
+        for(int i=2;i<=n;i++)
+        {
+            int currentElement=elementBeforePrevious+previous;
+            elementBeforePrevious=previous;
+            previous=currentElement;
+        }
+        return previous;
+    }
+}
+

@@ -1,0 +1,50 @@
+//TOPOLOGICAL SORT USING BFS
+//TC=O(N+E) SC=O(N)+O(N)+O(N)---> QUEUE, INDEGREE ARRAY, TOPO ARRAY FOR STORING TOPOLOGICAL SORT
+
+class Solution
+{
+    //Function to return list containing vertices in Topological order. 
+    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
+    {
+        // add your code here
+        //Create an indegree array
+        //Add nodes to queue with indegree 0
+        //Till queue is empty, remove from queue, print it, and trverse over neighbours, reduce their
+        //undegree by 1, if indegree become zero add them to queue.
+        
+        int indegree[]=new int[V];
+        for(int i=0;i<V;i++)
+        {
+            for(int j=0;j<adj.get(i).size();j++)
+            {
+                int child=adj.get(i).get(j);
+                indegree[child]++;
+            }
+        }
+        //ADD IN QUEUE NODES WITH INDEGREE 0
+        Queue<Integer> q=new LinkedList<>();
+        for(int i=0;i<V;i++)
+        {
+            if(indegree[i]==0)
+                q.add(i);
+        }
+        //ARRAY TO STORE TOPO
+        int topo[]=new int[V];
+        int ind=0;
+        while(q.isEmpty()==false)
+        {
+            int node=q.poll();
+            topo[ind]=node;  //ADD IN TOPO SORT
+            ind++;
+            for(int j=0;j<adj.get(node).size();j++)   //TRAVERSE OVER CHILDS
+            {
+                int child=adj.get(node).get(j);
+                indegree[child]--;    //REDUCE INDEGREE OF CHILD
+                if(indegree[child]==0)
+                    q.add(child);   //ADD CHILD IN QUEUE IF INDEGREE IS 0
+            }
+            
+        }
+        return topo;
+    }
+}

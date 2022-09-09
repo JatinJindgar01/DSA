@@ -1,0 +1,72 @@
+//DFS OF GRAPH
+//RECURSIVE TC=O(N+E) SC=O(N)+O(N) FOR RECURSION STACK AND VISITED ARRAY
+
+//3 STEPS
+//push
+//mark as visited
+//add to answer
+
+class Solution {
+    public void dfs(int i, ArrayList<ArrayList<Integer>> adj, boolean visited[], ArrayList<Integer> ans)
+    {
+        visited[i]=true;
+        ans.add(i);
+        for(int j=0;j<adj.get(i).size();j++)
+        {
+            int child=adj.get(i).get(j);
+            if(visited[child]==false)
+                dfs(child,adj,visited,ans);
+        }
+    }
+    // Function to return a list containing the DFS traversal of the graph.
+    public ArrayList<Integer> dfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        ArrayList<Integer> ans=new ArrayList<>();
+        boolean visited[]=new boolean[V];
+        for(int i=0;i<V;i++)
+        {
+            if(visited[i]==false)
+                dfs(i,adj,visited,ans);
+        }
+        return ans;
+    }
+}
+
+//ITERATIVE
+//TC=O(N+E) SC=O(N)+O(N) FOR STACK AND VISITED ARRAY
+
+class Solution {
+    public void dfs(int i, ArrayList<ArrayList<Integer>> adj, boolean visited[], ArrayList<Integer> ans)
+    {
+        Stack<Integer>st=new Stack<>();
+        st.push(i);
+        visited[i]=true;
+        while(st.empty()==false)
+        {
+            int node=st.pop();
+            ans.add(node);
+            for(int j=0;j<adj.get(node).size();j++)
+            {
+                int child=adj.get(node).get(j);
+                if(visited[child]==false)
+                {
+                    st.push(child);
+                    visited[child]=true;
+                }
+            }
+        }
+    }
+    // Function to return a list containing the DFS traversal of the graph.
+    public ArrayList<Integer> dfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        ArrayList<Integer> ans=new ArrayList<>();
+        boolean visited[]=new boolean[V];
+        for(int i=0;i<V;i++)
+        {
+            if(visited[i]==false)
+                dfs(i,adj,visited,ans);
+        }
+        return ans;
+    }
+}
+

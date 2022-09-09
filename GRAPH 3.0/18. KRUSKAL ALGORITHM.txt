@@ -1,0 +1,81 @@
+//KRUSKAL ALGORITHM , UNDIRECTED, WEIGHTED, CYCLES
+//TC=O(E)LOGE SC=O(n)
+
+class Pair implements Comparable<Pair>
+{
+    int u;
+    int v;
+    int weight;
+    Pair(int u,int v, int weight)
+    {
+        this.u=u;
+        this.v=v;
+        this.weight=weight;
+    }
+    public int compareTo(Pair other)
+    {
+        return this.weight-other.weight;
+    }
+}
+
+class Solution
+{
+    static int findPar(int u, int parent[])
+    {
+        if(u==parent[u])
+            return u;
+        return parent[u]=findPar(parent[u],parent);
+    }
+    static void union(int u, int v, int parent[], int rank[])
+    {
+        u=findPar(u,parent);
+        v=findPar(v,parent);
+        if(rank[u]<rank[v])
+            parent[u]=v;
+        else if(rank[v]<rank[u])
+            parent[v]=u;
+        else{
+            parent[v]=u;
+            rank[u]++;
+        }
+    }
+    //Function to find sum of weights of edges of the Minimum Spanning Tree.
+    
+    static int spanningTree(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj) 
+    {
+        // Add your code here
+        ArrayList<Pair> arr=new ArrayList<>();
+        for(int i=0;i<adj.size();i++)
+        {
+            for(int j=0;j<adj.get(i).size();j++)
+            {
+                ArrayList<Integer> edge=adj.get(i).get(j);
+                arr.add(new Pair(i,edge.get(0),edge.get(1)));
+            }
+        }
+        Collections.sort(arr);
+        int parent[]=new int[V];
+        int rank[]=new int[V];
+        for(int i=0;i<V;i++)
+        {
+            parent[i]=i;
+            rank[i]=0;
+        }
+        int sum=0;
+        ArrayList<Pair> mst=new ArrayList<>();
+        for(int i=0;i<arr.size();i++)
+        {
+            Pair p=arr.get(i);
+            if(findPar(p.u,parent)!=findPar(p.v, parent))
+            {
+                sum+=p.weight;
+                mst.add(p);
+                union(p.u,p.v,parent,rank);
+            }
+        }
+        // for(Pair p: mst)
+        //     System.out.println(p.u+" "+p.v);
+        return sum;
+    }
+}
+

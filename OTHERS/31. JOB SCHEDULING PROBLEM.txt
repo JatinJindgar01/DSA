@@ -1,0 +1,53 @@
+//JOB SCHEDULING PROBLEM
+//TC=O(N*MAXDEADLINNE) SC=(MAXDEADLINE)
+class Job {
+    int id, profit, deadline;
+    Job(int x, int y, int z){
+        this.id = x;
+        this.deadline = y;
+        this.profit = z; 
+    }
+}
+class mc implements Comparator<Job>
+{
+    public int compare(Job j1, Job j2)
+    {
+        return j2.profit-j1.profit;
+    }
+}
+class Solution
+{
+    //Function to find the maximum profit and the number of jobs done.
+    
+    int[] JobScheduling(Job arr[], int n)
+    {
+        // Your code here
+        mc ob=new mc();
+        Arrays.sort(arr,ob);
+        int md=arr[0].deadline;
+        for(int i=1;i<n;i++)
+        {
+            md=Math.max(md,arr[i].deadline);
+        }
+        int cnt=0;
+        int pr=0;
+        int tmp[]=new int[md];
+        for(int i=0;i<n;i++)
+        {
+            int u=arr[i].deadline;
+            for(int j=u-1;j>=0;j--)
+            {
+                if(tmp[j]==0)
+                {
+                    tmp[j]=arr[i].id;
+                    cnt++;
+                    pr=pr+arr[i].profit;
+                    break;
+                }
+            }
+        }
+        return new int[]{cnt,pr};
+        
+        
+    }
+}

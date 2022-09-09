@@ -1,0 +1,19 @@
+//remove duplicates from an sorted array
+//TC=O(N) SC=O(1)
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int n=nums.length;
+        int k=0;
+        int prev=nums[0];
+        for(int i=1;i<n;i++)
+        {
+            if(nums[i]!=prev)
+            {
+                k++;
+                nums[k]=nums[i];
+                prev=nums[k];
+            }        
+        }
+        return k+1;
+    }
+}

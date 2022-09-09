@@ -1,0 +1,65 @@
+//INTERSECTION POINT OF TWO LINKEDLISTS
+//USING 2 LOOPS 
+//TC=O(M*N) SC=O(1)
+
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if(headA==null || headB==null)
+                return null;
+        ListNode h1=headA;
+        while(h1!=null)
+        {
+            ListNode h2=headB;
+            while(h2!=null)
+            {
+                if(h2==h1)
+                    return h1;
+                h2=h2.next;
+            }
+            h1=h1.next;
+        }
+        return null;
+    }
+}
+
+//HashSet
+//TC=O(M)+O(N) SC=O(N)
+
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if(headA==null || headB==null)
+                return null;
+        ListNode h1=headA;
+        HashSet<ListNode> h=new HashSet<>();
+        while(h1!=null)
+        {   h.add(h1);
+            h1=h1.next;
+        }
+        ListNode h2=headB;
+        while(h2!=null)
+        {
+            if(h.contains(h2))
+                return h2;
+            h2=h2.next;
+        }
+        return null;
+    }
+}
+
+//WITHOUT EXTRA SPACE TAKES 2 TRAVERSAL TO FIND THE ANSWER
+//TC=O(M+N) SC=O(1)
+
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if(headA==null || headB==null)
+        return null;
+        ListNode p1=headA;
+        ListNode p2=headB;
+        while(p1!=p2)
+        {
+            p1=(p1==null)?headB:p1.next;
+            p2=(p2==null)?headA:p2.next;
+        }
+        return p1;
+    }
+}

@@ -1,0 +1,95 @@
+//lru cache
+//tc=o(1) sc=o(n)
+class Node
+{
+   Node prev;
+   Node next;
+   int key;
+   int value;
+   Node(int key,int val)
+   {
+   this.key=key;
+   this.value=val;
+   }
+   
+}
+class LRUCache {
+    int capacity;
+    Node head;
+    Node tail;
+    HashMap<Integer,Node> h;
+    public LRUCache(int capacity) {
+        this.capacity=capacity;
+        head=new Node(0,0);
+        tail=new Node(0,0);
+        head.next=tail;
+        tail.prev=head;
+        h=new HashMap<>();
+    }
+    public void insert(Node node)
+    {
+        Node nextNode=head.next;
+        head.next=node;
+        node.prev=head;
+        node.next=nextNode;
+        nextNode.prev=node;
+    }
+    
+    public void delete(Node node)
+    {
+        node.prev.next=node.next;
+        node.next.prev=node.prev;
+    }
+    
+    public int get(int key) {
+        if(h.containsKey(key))
+        {
+            Node address=h.get(key);
+            int ans=address.value;
+            delete(address);
+            insert(address);
+            return ans;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+    
+    public void put(int key, int value) {
+        if(h.containsKey(key))
+        {
+            Node address=h.get(key);
+            address.value=value;
+            delete(address);
+            insert(address);
+        }
+        else
+        {
+            if(h.size()>=capacity)
+            {   
+                int k= tail.prev.key;
+                h.remove(k);
+                delete(tail.prev);
+                Node n= new Node(key,value);
+                insert(n);
+                h.put(key,n);
+
+            }
+            else
+            {
+                Node n= new Node(key,value);
+                insert(n);
+                h.put(key,n);
+                
+            }
+        }
+    }
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */

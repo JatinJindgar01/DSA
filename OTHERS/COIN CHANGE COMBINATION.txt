@@ -1,0 +1,21 @@
+//COIN CHANGE COMBINATION
+//TC=O(M*N) SC=O(N)
+//DP
+class Solution
+{
+    public long count(int S[], int m, int n) 
+    { 
+        //code here.
+        long dp[]=new long[n+1];
+        dp[0]=1;
+        for(int i=0;i<S.length;i++)
+        {
+            for(int j=S[i];j<dp.length;j++)
+            {
+                dp[j]=dp[j]+dp[j-S[i]];
+            }
+        }
+        return dp[n];
+        
+    } 
+}                  

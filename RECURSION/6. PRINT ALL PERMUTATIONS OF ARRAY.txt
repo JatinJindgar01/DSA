@@ -1,0 +1,76 @@
+//PRINT ALL PERMUTATIONS OF A ARRAY
+//TC=O(N!*N) SC=O(N!+N) AUX SPACE=O(N)  
+//PICK NON-PICK METHOD. EXTRA VISITED ARRAY REQUIRED
+
+class Solution {
+    void fun(int nums[],List<List<Integer>> l,ArrayList<Integer> ds,boolean[] p)
+    {
+        if(ds.size()==nums.length)
+        {
+            l.add(new ArrayList<Integer>(ds));
+            return;
+        }
+        for(int j=0;j<nums.length;j++)
+        {    
+            if(p[j]==false)
+        {
+            p[j]=true;
+                ds.add(nums[j]);
+            fun(nums,l, ds,p);
+            ds.remove(ds.size()-1);
+            p[j]=false;
+           
+            
+        }
+         
+        }
+        
+        
+    }
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> l=new ArrayList<>();
+        ArrayList<Integer> ds=new ArrayList<>();
+        boolean p[]=new boolean[nums.length];
+        fun(nums,l,ds,p);
+        return l;
+    }
+}
+
+
+
+//BETTER SWAP METHOD
+//TC=O(N!*N) SC=O(N!+N) AUX SPACE=O(1)  
+/NO VISITED ARRAY, IN PLACE CHANGES IN ARRAY IS DONE
+
+class Solution {
+    void swap(int i,int j,int nums[])
+    {
+        int temp=nums[i];
+        nums[i]=nums[j];
+        nums[j]=temp;
+    }
+    void fun(List<List<Integer>> l,int nums[],int i)
+    {
+        if(i==nums.length)
+        {
+            ArrayList<Integer> ds=new ArrayList<>();
+            for(int y=0;y<nums.length;y++)
+            {
+                ds.add(nums[y]);
+            }
+            l.add(ds);
+            return;
+        }
+        for(int ind=i;ind<nums.length;ind++)
+        {
+            swap(i,ind,nums);
+            fun(l,nums,i+1);
+              swap(i,ind,nums);
+        }
+    }
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> l=new ArrayList<>();
+        fun(l,nums,0);
+        return l;
+    }
+}

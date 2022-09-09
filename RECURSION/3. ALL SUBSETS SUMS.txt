@@ -1,0 +1,22 @@
+//SUBSET SUMS
+//GIVEN AN ARRAY RETURN AN ARRAYLIST CONTAINING ALL SUBSET SUMS
+//TC=O(2^N) 
+class Solution{
+    void fun(int i,int sum, ArrayList<Integer> arr, int N, ArrayList<Integer> ans)
+    {  if(i==N)
+        {
+           ans.add(sum);
+           return;
+        }
+        fun(i+1,sum+arr.get(i),arr,N,ans);
+        fun(i+1,sum,arr,N,ans);
+    }
+    ArrayList<Integer> subsetSums(ArrayList<Integer> arr, int N){
+        // code here
+        ArrayList<Integer> ans=new ArrayList<>();
+        fun(0,0,arr,N,ans);
+        return ans;
+        
+        
+    }
+}

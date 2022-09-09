@@ -1,0 +1,40 @@
+//CHECK IF GRAPH IS BIPARTITE USING DFS
+//TC=O(N+E) SC=O(N)
+
+class Solution
+{
+    public boolean checkDfs(int i, ArrayList<ArrayList<Integer>>adj, int color[] )
+    {
+            for(int j=0;j<adj.get(i).size();j++)
+            {
+                int child=adj.get(i).get(j);
+                if(color[child]==-1)
+                {
+                    color[child]=1-color[i];
+                    if(checkDfs(child,adj,color)==false)
+                        return false;
+                }
+                else if(color[child]==color[i])
+                {
+                    return false;
+                }
+            }
+        
+        return true;
+    }
+    public boolean isBipartite(int V, ArrayList<ArrayList<Integer>>adj)
+    {
+        // Code here
+        int color[]=new int[V];
+        Arrays.fill(color,-1);
+        for(int i=0;i<V;i++)
+        {
+            if(color[i]==-1)
+            {   color[i]=1;
+                if(checkDfs(i,adj,color)==false)
+                    return false;
+            }
+        }
+        return true;
+    }
+}

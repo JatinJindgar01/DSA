@@ -1,0 +1,56 @@
+//CYCLE DETECTION IN AN UNDIRECTED GRAPH USING BFS
+//TC=O(N+E) SC=O(N)+O(N)
+
+class Node
+{
+    int curr_node;
+    int par;
+    Node(int curr_node, int par)
+    {
+        this.curr_node=curr_node;
+        this.par=par;
+    }
+}
+class Solution {
+    // Function to detect cycle in an undirected graph.
+    public boolean isCycle(int i, ArrayList<ArrayList<Integer>> adj, boolean visited[])
+    {
+        Stack<Node> st=new Stack<>();
+        st.push(new Node(i,-1));
+        visited[i]=true;
+        while(st.empty()==false)
+        {
+            Node node=st.pop();
+            int curr_node=node.curr_node;
+            int par=node.par;
+            for(int j=0;j<adj.get(curr_node).size();j++)
+            {
+                int child=adj.get(curr_node).get(j);
+                if(visited[child]==false)
+                {
+                    st.push(new Node(child,curr_node));
+                    visited[child]=true;
+                }
+                else
+                {
+                    if(child!=par)
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        boolean visited[]=new boolean[V];
+        for(int i=0;i<V;i++)
+        {
+            if(visited[i]==false)
+            {
+                if(isCycle(i,adj,visited)==true)
+                    return true;
+            }
+        }
+        return false;
+    }
+}

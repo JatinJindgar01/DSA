@@ -1,0 +1,108 @@
+//PALINDROME OF LINKEDLIST
+
+//STORE NODES IN ARRAY AND USE TWO POINTER
+//TC=O(N)+O(N/2) SC=O(N)
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if(head==null || head.next==null)
+            return true;
+        ListNode tmp=head;
+        ArrayList<Integer> arr=new ArrayList<>();
+        while(tmp!=null)
+        {
+            arr.add(tmp.val);
+            tmp=tmp.next;
+        }
+        int low=0;
+        int high=arr.size()-1;
+        while(low<high)
+        {
+            if(arr.get(low)!=arr.get(high))
+                return false;
+            low++;
+            high--;
+        }
+        return true;
+    
+    }
+}
+
+
+//USING STACK, 2 TIMES TRAVERSAL
+//TC=O(n)+O(N) SC=O(N)
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if(head==null || head.next==null)
+            return true;
+        ListNode tmp=head;
+        Stack<Integer> st=new Stack<>();
+        while(tmp!=null)
+        {
+            st.push(tmp.val);
+            tmp=tmp.next;
+        }
+        tmp=head;
+        while(tmp!=null)
+        {
+            if(tmp.val!=st.pop())
+                return false;
+            tmp=tmp.next;
+        }
+        return true;
+    
+    }
+}
+
+//find middle, reverse it,and then traverse wITHOUT EXTRA SPACE
+//TC=O(N) +O(N)+O(N) SC=O(1)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverse(ListNode head)
+    {
+        if(head==null || head.next==null)
+            return head;
+        ListNode prev=reverse(head.next);
+        head.next.next=head;
+        head.next=null;
+        return prev;
+    }
+    public boolean isPalindrome(ListNode head) {
+        if(head==null || head.next==null)
+            return true;
+        ListNode slow=head;
+        ListNode fast=head;
+        ListNode mid;
+        while(fast.next!=null && fast.next.next!=null)
+        {
+            fast=fast.next.next;
+            slow=slow.next;
+           
+        }
+        mid=slow;
+        ListNode newHead=reverse(mid.next);
+      System.out.println(mid.val);
+        while(newHead!=null)
+        {  System.out.println(head.val);
+           System.out.println(newHead.val);
+            if(head.val!=newHead.val)
+                return false;
+            head=head.next;
+            newHead=newHead.next;
+        }
+        return true;
+            
+        
+        
+        
+        
+    }
+}

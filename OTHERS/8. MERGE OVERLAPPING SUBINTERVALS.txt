@@ -1,0 +1,117 @@
+// MERGE OVERLAPPING SUBINTERVALS
+
+// USING PAIR CLASS AND ONE STACK AND ONE ARRAYLIST
+//TC=O(NLOGN) SC=O(2N)
+
+class Pair implements Comparable<Pair>
+{
+    int st;
+    int et;
+    Pair(int st, int et)
+    {
+    this.st=st;
+    this.et=et;
+    }
+    public int compareTo(Pair m)
+    {
+        return this.st-m.st;
+    }
+}
+class Solution {
+    
+    public int[][] merge(int[][] intervals) {
+    Stack<Pair> st=new Stack<>();
+    ArrayList<Pair> arr=new ArrayList<>();
+    for(int i=0;i<intervals.length;i++)
+    {
+        arr.add(new Pair(intervals[i][0], intervals[i][1]));
+    }
+    Collections.sort(arr);
+    st.push(arr.get(0));
+    for(int i=1;i<arr.size();i++)
+    {
+        Pair l=arr.get(i);
+        Pair top=st.peek();
+        if(l.st<=top.et)
+        {
+           top.et=Math.max(top.et,l.et);
+        }
+        else
+        {
+        st.push(l);
+        }
+    }
+    
+    int y[][]=new int[st.size()][2];
+    for(int i=0;i<st.size();i++)
+    {   
+        y[i][0]=st.get(i).st;
+        y[i][1]=st.get(i).et;
+ 
+    }
+    return y;
+        
+    }
+}
+
+//BETTER USING 1 STACK
+//TC=O(Nlogn) SC=O(N)
+
+class Solution {
+    
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals,(a,b)->Integer.compare(a[0],b[0]));
+        Stack<int[]> st=new Stack<>();
+        st.push(new int[]{intervals[0][0],intervals[0][1]});
+        for(int i=1; i<intervals.length;i++)
+        {   int top[]=st.peek();
+            if(intervals[i][0]<=top[1])
+            {
+                top[1]=Math.max(top[1],intervals[i][1]);
+            }
+            else
+            {
+                st.push(new int[]{intervals[i][0],intervals[i][1]});
+            }
+        }
+        int y[][]=new int[st.size()][2];
+        for(int i=0;i<st.size();i++)
+        {
+            y[i][0]=st.get(i)[0];
+            y[i][1]=st.get(i)[1];
+        }
+        return y;
+    }
+}
+
+//OPTIMAL WITHOUT EXTRA SPACE
+// TC=O(Nlogn) SC=O(1)
+
+class Solution {
+    
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals,(a,b)->Integer.compare(a[0],b[0]));
+        int index=0;
+        for(int i=1; i<intervals.length;i++)
+        {   
+            if(index<intervals.length && intervals[i][0]<=intervals[index][1])
+            {
+                intervals[index][1]=Math.max(intervals[i][1],intervals[index][1]);
+            }
+            else
+            {   index++;
+                intervals[index][0]=intervals[i][0];
+                intervals[index][1]=intervals[i][1];
+            }
+        }
+        int y[][]=new int[index+1][2];
+        for(int i=0;i<y.length;i++)
+        {
+            y[i][0]=intervals[i][0];
+            y[i][1]=intervals[i][1];
+        }
+        return y;
+    }
+}
+
+
