@@ -1,0 +1,42 @@
+//VERTICAL ORDER TRAVERSAL
+
+//TC=O(N) SC=O(N)
+
+import java.util.*;
+class Solution {
+    class QueueMy
+    {
+        int hd;
+        TreeNode node;
+        QueueMy(int hd, TreeNode node)
+        {
+            this.hd=hd;
+            this.node=node;
+        }
+    }
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        
+     TreeMap<Integer, ArrayList<Integer>> mp=new TreeMap<>();
+        Queue<QueueMy> q=new LinkedList<>();
+        q.add(new QueueMy(0,root));
+        while(q.size()>0)
+        {
+            QueueMy p=q.poll();
+            ArrayList<Integer> v=mp.get(p.hd);
+            if(mp.containsKey(p.hd)==false)
+            {
+                v=new ArrayList<>();
+            }
+            v.add(p.node.val);
+            mp.put(p.hd,v);
+            if(p.node.left!=null)
+            q.add(new QueueMy(p.hd-1,p.node.left));
+            if(p.node.right!=null)
+            q.add(new QueueMy(p.hd+1,p.node.right));
+        }
+      Collection<ArrayList<Integer>> c=mp.values();
+        List<List<Integer>> ans=new ArrayList<>(c);
+        return ans;
+        
+    }
+}

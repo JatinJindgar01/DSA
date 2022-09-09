@@ -1,0 +1,43 @@
+//PATH TO GIVEN NODE
+//TC=O(N) SC=O(N)
+
+public class Solution {
+    public boolean find(TreeNode A, int B, ArrayList<Integer> ans)
+    {
+        if(A==null)
+        return false;
+        else if(A.val==B)
+        {
+            ans.add(A.val);
+            return true;
+        }
+        else if(find(A.left,B,ans))
+        {
+            ans.add(A.val);
+            return true;
+        }
+        else if(find(A.right,B,ans))
+        {
+            ans.add(A.val);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public int[] solve(TreeNode A, int B) {
+        ArrayList<Integer> ans=new ArrayList<>();
+            if(find(A,B,ans))
+            {
+                Collections.reverse(ans);
+            int a[]=new int[ans.size()];
+            for(int i=0;i<ans.size();i++)
+            a[i]=ans.get(i);
+            return a;
+            }
+            else
+            return new int[0];
+            
+    }
+}

@@ -1,0 +1,43 @@
+//COUNT OF DISTINCT SUBSTRINGS
+//TC=O(M*M) SC=O(M)
+class Node
+{
+    Node links[]=new Node[26];
+    public void put(char ch, Node node)
+    {
+        links[ch-'a']=node;
+    }
+    public Node get(char ch)
+    {
+        return links[ch-'a'];
+    }
+    public boolean containsKey(char ch)
+    {
+        return links[ch-'a']!=null;
+    }
+}
+class GfG
+{
+   public static int countDistinctSubstring(String st)
+   {
+       //your code here
+       Node root=new Node();
+       int n=st.length();
+       int count=0;
+       for(int i=0;i<n;i++)
+       {   Node node=root;
+           for(int j=i;j<n;j++)
+           {
+               char ch=st.charAt(j);
+               if(node.containsKey(ch)==false)
+               {
+                   node.put(ch,new Node());
+                   count++;
+               }
+               node=node.get(ch);
+           }
+       }
+       return count+1;
+       
+   }
+}

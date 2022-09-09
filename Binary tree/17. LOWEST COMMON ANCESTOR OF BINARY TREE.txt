@@ -1,0 +1,103 @@
+//LOWEST COMMON  ANCESTOR OF BINARY TREE
+//TC=O(3*N) SC=O(N)
+
+class Solution {
+    public boolean nodeToPath(TreeNode root, TreeNode p,ArrayList<TreeNode> ans)
+    {
+        if(root==null)
+            return false;
+        else if(root==p || nodeToPath(root.left,p,ans) || nodeToPath(root.right,p,ans))
+        {
+            ans.add(root);
+            return true;
+        }
+        else
+            return false;
+    }
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        ArrayList<TreeNode> arr1=new ArrayList<>();
+        ArrayList<TreeNode> arr2=new ArrayList<>();
+        boolean first=nodeToPath(root,p,arr1);
+        boolean second=nodeToPath(root,q,arr2);
+        if(first==true && second==true)
+        {
+            int i=arr1.size()-1;
+            int j=arr2.size()-1;
+            while(i>=0 && j>=0 && arr1.get(i)==arr2.get(j))
+            {
+                i--;
+                j--;
+            }
+            return arr1.get(i+1);
+        }
+        else
+        {
+            return null;
+        }
+    }
+}
+
+//BETTER APPROACH assuming BOTH ELEMENTS EXISTS IN TREE. EVEN IF ONE NODE IS PRESENT IT WILL RETURN THE SAME NODE AS LCS. IDEALLY A NULL
+SHOULD HAVE BEEN RETURNED
+//TC=O(N) SC=O(N)
+
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root==null)
+            return null;
+        else if(root==p || root==q)
+            return root;
+        else
+        {
+            TreeNode leftLcs=lowestCommonAncestor(root.left,p,q);
+            TreeNode rightLcs=lowestCommonAncestor(root.right,p,q);
+            if(leftLcs!=null && rightLcs!=null)
+                return root;
+            else
+                return leftLcs==null?rightLcs:leftLcs;
+        }
+    }
+}
+
+//BEST 
+//TC=O(N) SC=O(N)
+//USING 2 BOOLEAN VARIABLES TO MAKE SURE THAT BOTH NODES EXISTS OR NOT
+
+class Solution {
+   static boolean first=false;
+   static boolean second=false;
+    public TreeNode LCS(TreeNode root, TreeNode p, TreeNode q)
+    {
+        if(root==null)
+            return null;
+        else if(root==p || root==q)
+        {
+         if(root==p)
+         {
+             first=true;
+         }
+            if(root==q)
+            {
+                second=true;
+            }
+            return root;
+        }   
+        else
+        {
+            TreeNode leftLcs=LCS(root.left,p,q);
+            TreeNode rightLcs=LCS(root.right,p,q);
+            if(leftLcs!=null && rightLcs!=null)
+                return root;
+            else
+                return leftLcs==null?rightLcs:leftLcs;
+        }
+    }
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        TreeNode ans=LCS(root,p,q);
+        if(first==true && second==true)
+            return ans;
+        else
+            return null;
+    }
+}
+

@@ -1,0 +1,87 @@
+//WORD BREAK 1
+
+//RECURSION
+//TC=2^N AT EVERY INDEX WE CAN EITHER PARTITION OR WE CAN'T PARTITION
+class Sol
+{
+    public static int fun(int ind,String A, ArrayList<String> B)
+    {
+        if(ind==A.length())
+            return 1; //NO ELEMENT IN SUFFIX PART, ALL STRING IN PREFIX PART SO RETURN 1
+        for(int k=ind;k<A.length();k++)
+        {
+            if(B.contains(A.substring(ind,k+1)) && fun(k+1,A,B)==1)
+                return 1;
+        }
+        return 0;
+        
+            
+    }
+    public static int wordBreak(String A, ArrayList<String> B )
+    {
+        //code here
+        //System.out.println(A);
+        int n=A.length();
+        return fun(0,A,B);
+    }
+}
+
+//MEMORIZATION
+//TC=O(N*N*N) SC=O(N)+O(N)
+class Sol
+{
+    public static int fun(int ind,String A, ArrayList<String> B, int dp[])
+    {
+        if(ind==A.length())
+            return 1; //NO ELEMENT IN SUFFIX PART, ALL STRING IN PREFIX PART SO RETURN 1
+        if(dp[ind]!=-1)
+            return dp[ind];
+        for(int k=ind;k<A.length();k++)
+        {
+            if(B.contains(A.substring(ind,k+1)) && fun(k+1,A,B,dp)==1)
+                return dp[ind]=1;
+        }
+        return dp[ind]=0;
+        
+            
+    }
+    public static int wordBreak(String A, ArrayList<String> B )
+    {
+        //code here
+        //System.out.println(A);
+        int n=A.length();
+        int dp[]=new int[n];
+        Arrays.fill(dp,-1);
+        return fun(0,A,B,dp);
+    }
+}
+
+//TABULATION
+//TC=O(N*N*N) SC=O(N)
+class Sol
+{
+   
+    public static int wordBreak(String A, ArrayList<String> B )
+    {
+        //code here
+        //System.out.println(A);
+        int n=A.length();
+        int dp[]=new int[n+1];
+        for(int ind=n;ind>=0;ind--)
+        {
+            if(ind==n)
+                dp[ind]=1;
+            else
+            {
+                for(int k=ind;k<A.length();k++)
+                  {
+                     if(B.contains(A.substring(ind,k+1)) && dp[k+1]==1)
+                        return dp[ind]=1;
+                  }
+            }
+            
+        }
+        return dp[0];
+    }
+}
+

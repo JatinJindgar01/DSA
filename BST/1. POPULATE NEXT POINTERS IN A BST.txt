@@ -1,0 +1,56 @@
+//POPULATE NEXT POINTERS IN EACH NODE
+//TC=O(N) SC=O(N)
+//RECURSIVE
+
+class Solution {
+    public void help(Node root)
+    {
+        if(root==null)
+            return;
+        if(root.left!=null)
+            root.left.next=root.right;
+        if(root.right!=null && root.next!=null)
+            root.right.next=root.next.left;
+        help(root.left);
+        help(root.right);
+    }
+    public Node connect(Node root) {
+        //2 connections to be made
+        //root.left.next=root.right;
+        //root.right.next=root.next.left;
+        //do a preoder traversal as root must be processes before left and right child
+        //for second type of connection to be made
+        
+        help(root);
+        return root;
+    }
+}
+
+
+//ITERATIVE TC=O(n) SC=O(1)
+
+class Solution {
+    public Node connect(Node root) {
+        //iterative using level by level. whenever i am at a level i can set the connections for that level
+        
+        if(root==null)
+            return root;
+        Node start=root;
+        while(start!=null)
+        {
+            Node curr=start;
+            while(curr!=null)
+            {
+                if(curr.left!=null)
+                    curr.left.next=curr.right;
+                if(curr.right!=null && curr.next!=null)
+                    curr.right.next=curr.next.left;
+                //Moving to next noe in same level
+                curr=curr.next;
+            }
+            //moving to next level
+            start=start.left;
+        }
+        return root;
+    }
+}

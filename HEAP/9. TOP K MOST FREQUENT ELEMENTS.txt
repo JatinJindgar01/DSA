@@ -1,0 +1,29 @@
+//TOP K FREQUENT ELEMENTS
+
+//CREATE A FREQUENCY MAP, PUT THE ENTRY SETS IN A LIST AND SORT IT ON BASIS OF VALUE , GET KEYS OF FIRST K ELEMENTS OF LIST AND ADD TO ANSWER
+//TC=O(NLOGN) SC=O(N)
+class mc implements Comparator<Map.Entry<Integer,Integer>>
+{
+    public int compare(Map.Entry<Integer,Integer> o1, Map.Entry<Integer,Integer> o2)
+    {
+      return o2.getValue()-o1.getValue();
+    }
+}
+class Solution {
+    public int[] topKFrequent(int[] nums, int K) {
+        int ans[]=new int[K];
+        HashMap<Integer, Integer> h=new HashMap<>();
+        for(int i=0;i<nums.length;i++)
+        {
+            h.put(nums[i], h.getOrDefault(nums[i],0)+1);
+        }
+        List<Map.Entry<Integer,Integer>> l=new ArrayList<>(h.entrySet());
+        mc obj=new mc();
+        Collections.sort(l,obj);
+        for(int i=0;i<K;i++)
+        {
+        ans[i]=l.get(i).getKey();
+        }
+        return ans;
+    }
+}

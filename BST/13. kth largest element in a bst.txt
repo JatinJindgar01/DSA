@@ -1,0 +1,26 @@
+//kth largest element in a bst
+
+//recursive tc=o(n) sc=o(n)
+
+class Solution
+{
+    // return the Kth largest element in the given BST rooted at 'root'
+     public void help(Node root, int[] k, int ans[])
+    {
+        if(root==null)
+            return;
+        help(root.right,k,ans);
+       // System.out.print(root.data+" ");
+        k[0]--;
+        if(k[0]==0)
+            ans[0]=root.data;
+        help(root.left,k,ans);
+    }
+    public int kthLargest(Node root,int k)
+    {
+        //Your code here
+        int ans[]=new int[1];
+        help(root,new int[]{k},ans);
+        return ans[0];
+    }
+}

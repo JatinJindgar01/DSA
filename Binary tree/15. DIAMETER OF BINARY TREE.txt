@@ -1,0 +1,84 @@
+//DIAMETER OF BINARY TREE
+//TC=O(N*N) SC=O(N)
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if(root==null)
+            return -1;
+        int leftHeight=maxDepth(root.left);
+        int rightHeight=maxDepth(root.right);
+        return Math.max(leftHeight,rightHeight)+1;
+    }
+    public int diameterOfBinaryTree(TreeNode root) {
+        if(root==null)
+            return 0;
+        int ld=diameterOfBinaryTree(root.left);
+        int rd=diameterOfBinaryTree(root.right);
+        int viaRoot=maxDepth(root.left)+maxDepth(root.right)+2;
+        return Math.max(viaRoot,Math.max(ld,rd));
+    }
+}
+
+
+//BETTER HEIGHT AND DIAMETER CALCULATE IN SAME FUNCTION
+//TC=O(N) SC=O(N)
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    class DiaPair
+    {
+        int ht;
+        int dia;
+    }
+    public DiaPair diameterHelp(TreeNode root)
+    {
+        if(root==null)
+        {
+            DiaPair dp=new DiaPair();
+            dp.ht=-1;
+            dp.dia=0;
+            return dp;
+        }
+        DiaPair leftDia=diameterHelp(root.left);
+        DiaPair rightDia=diameterHelp(root.right);
+        DiaPair myPair=new DiaPair();
+        myPair.ht=Math.max(leftDia.ht,rightDia.ht)+1;
+        myPair.dia=Math.max(leftDia.ht+rightDia.ht+2,Math.max(leftDia.dia,rightDia.dia));
+        return myPair;
+        
+    }
+    public int diameterOfBinaryTree(TreeNode root) {
+        DiaPair ans=diameterHelp(root);
+        return ans.dia;
+    }
+}
+

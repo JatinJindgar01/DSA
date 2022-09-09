@@ -1,0 +1,50 @@
+//BALANCED BINARY TREE
+
+//BRUTE FORCE USING HEIGHT FUNCTION
+//TC=O(N*N) SC=O(N)
+
+
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if(root==null)
+            return 0;
+        int leftHeight=maxDepth(root.left);
+        int rightHeight=maxDepth(root.right);
+        return Math.max(leftHeight,rightHeight)+1;
+    }
+    public boolean isBalanced(TreeNode root) {
+        if(root==null)
+            return true;
+        return (Math.abs(maxDepth(root.left)-maxDepth(root.right))<=1 && isBalanced(root.left) && isBalanced(root.right));
+    }
+}
+
+//BETTER USING POST ORDER TRAVERSAL
+//WE KNOW THAT IN PREVIOUS APPROACH WE CALCULATED HEIGHT OF SUBTREES AGAIN AND AGAIN. TO AVOID THAT WE CAN DO POSTORDER TRAVERSAL.
+//IN POSTORDER IT IS LEFT,RIGHT,ROOT. SO WE BASICALLY CALCULATE THE HEIGHT AND BALANCE OF DEEPEST TREE FIRST AND THEN PROPOGATE THE RESULT TO ABOVE NODES
+//ALSO IF -1 IS RETURNED IT MEANS THAT SOMEONE WAS UNBALANCED AND HENCE WE CAN JUST RETURN -1
+//TC=O(N) SC=O(N)
+class Solution {
+    public int help(TreeNode root)
+    {
+        if(root==null)
+            return 0;
+        int leftBalance=help(root.left);
+        if(leftBalance==-1)
+            return -1;
+        int rightBalance=help(root.right);
+        if(rightBalance==-1)
+            return -1;
+        if(Math.abs(leftBalance-rightBalance)<=1)
+            return Math.max(leftBalance,rightBalance)+1;
+        else
+            return -1;
+        
+    }
+    public boolean isBalanced(TreeNode root) {
+        if(help(root)==-1)
+            return false;
+        else
+            return true;
+    }
+}

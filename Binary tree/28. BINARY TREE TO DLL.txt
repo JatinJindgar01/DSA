@@ -1,0 +1,32 @@
+//BINARY TREE TO DLL
+//TC=O(N) SC=O(n)
+//USING INORDER TRAVERSAL
+class Solution
+{
+    //Function to convert binary tree to doubly linked list and return it.
+    Node head=null;
+    Node prev=null;   
+    void inorder(Node root)
+    {
+        if(root==null)
+        return;
+        inorder(root.left);   
+        if(prev==null)    //IT MEANS THE FIRST NODE IT IS,SO MAKE SURE HEAD POINTS TO IT
+        {
+            head=root;
+        }
+        else
+        {
+            prev.right=root;
+            root.left=prev;
+        }
+        prev=root;          //IN BOTH CASES, MAKE PREV POINT TO CURRENT NODE
+        inorder(root.right);
+    }
+    Node bToDLL(Node root)
+    {
+	//  Your code here	
+	 inorder(root);
+	 return head;
+    }
+}

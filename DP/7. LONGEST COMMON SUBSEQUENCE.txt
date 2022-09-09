@@ -1,0 +1,117 @@
+//LONGEST CONSECUTIVE SUBSEQUENCE
+//BRUTE
+GENERATE ALL SUBSEQUENCES FROM FIRST STRING--------------->2^M------------>OUTER LOOP
+GENERATE ALL SUBSEQUENCES FROM SECOND STRING--------------->2^N------------>INNER LOOP
+if anybody common, find it's length, update global maximum
+TC=2^(M+N)
+
+//BETTER RECURSION
+//EXPRESS THE PROBLEM IN TERMS OF INDEX (0,1,2, ..........,M-1)
+//DO TASK ON IT
+//SELECT ANSWER BY DOING MAX, COUNT ETC
+
+//TC=2^(M+N) SC=O(N+M)
+class Solution {
+    public int fun(String s1, String s2, int ind1, int ind2)
+    {
+        if(ind1<0 || ind2<0)
+            return 0;
+        if(s1.charAt(ind1)==s2.charAt(ind2))
+            return 1+fun(s1,s2,ind1-1,ind2-1);
+        else
+            return Math.max(fun(s1,s2,ind1-1,ind2),fun(s1,s2,ind1,ind2-1));
+    }
+    public int longestCommonSubsequence(String text1, String text2) {
+        int m=text1.length();
+        int n=text2.length();
+        return fun(text1,text2,m-1,n-1);
+    }
+}
+
+//MEMORIZATION
+//TC=O(M*N) SC=O(M*N)+O(M+N)
+
+class Solution {
+    public int fun(String s1, String s2, int ind1, int ind2, int dp[][])
+    {   
+        if(ind1<0 || ind2<0)
+            return 0;
+        if(dp[ind1][ind2]!=-1)
+            return dp[ind1][ind2];
+        if(s1.charAt(ind1)==s2.charAt(ind2))
+            return dp[ind1][ind2]=1+fun(s1,s2,ind1-1,ind2-1,dp);
+        else
+            return dp[ind1][ind2]=Math.max(fun(s1,s2,ind1-1,ind2,dp),fun(s1,s2,ind1,ind2-1,dp));
+    }
+    public int longestCommonSubsequence(String text1, String text2) {
+        int m=text1.length();
+        int n=text2.length();
+        int dp[][]=new int[m][n];
+        for(int i=0;i<dp.length;i++)
+        {
+            Arrays.fill(dp[i],-1);
+        }
+         return fun(text1,text2,m-1,n-1,dp);
+    }
+}
+
+
+//TABULATION 
+//TC=O(M*N) SC=O(M*N)
+
+class Solution {
+    public int longestCommonSubsequence(String s1, String s2) {
+        int m=s1.length();
+        int n=s2.length();
+        //ind1   -1,0 ,1,2,3,m-1  (including corner cases)
+        //ind2    -1,0,1,2,3,n-1  (including corner cases)
+        //IN DP ARRAY WE CAN'T REPRESENT -1, SO DO A CO-ORDINATE SHIFT
+        // SO ind1   0 ,1,2,3,m  (including corner cases)
+        //ind2       0,1,2,3,n  (including corner cases)
+        //base case now is not at -1, but at 0
+         int dp[][]=new int[m+1][n+1];
+         for(int ind1=0;ind1<=m;ind1++)
+         {
+             for(int ind2=0;ind2<=n;ind2++)
+             {
+                 if(ind1==0 || ind2==0)
+                 {    dp[ind1][ind2]=0;
+                      continue;
+                 }
+                 if(s1.charAt(ind1-1)==s2.charAt(ind2-1))
+                     dp[ind1][ind2]=1+dp[ind1-1][ind2-1];
+                 else
+                     dp[ind1][ind2]=Math.max(dp[ind1-1][ind2],dp[ind1][ind2-1]);  
+             }
+         }
+        return dp[m][n];
+         
+    }
+}
+
+//SPACE OPTIMATION
+//TC=O(M*N) SC=O(N)
+
+class Solution {
+    public int longestCommonSubsequence(String s1, String s2) {
+       int n=s1.length();
+    int m=s2.length();
+    
+    // Base Case is covered as we have initialized the prev and cur to 0.
+    int prev[]=new int[m+1];
+    
+    for(int ind1=1;ind1<=n;ind1++){
+        int cur[]=new int[m+1];
+        for(int ind2=1;ind2<=m;ind2++){
+            if(s1.charAt(ind1-1)==s2.charAt(ind2-1))
+                cur[ind2] = 1 + prev[ind2-1];
+            else
+                cur[ind2] = 0 + Math.max(prev[ind2],cur[ind2-1]);
+        }
+        prev=cur;
+    }
+    
+    return prev[m];
+    }
+}
+

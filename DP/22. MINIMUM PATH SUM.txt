@@ -1,0 +1,112 @@
+//MINIMUM PATH SUM
+//TC= 2^n SC=O(n)
+// recursive
+class Solution {
+    public int aux(int i, int j, int[][] grid, int m,int n)
+    {
+         if(i>=m ||j>=n)
+        {
+            return (int)1e9;
+        }
+        else if(i==m-1 && j==n-1)
+        {
+            return grid[i][j];
+        }
+        
+        int left=grid[i][j]+aux(i+1,j,grid,m,n);
+        int down=grid[i][j]+aux(i,j+1,grid,m,n);
+        return Math.min(left,down);
+    }
+    public int minPathSum(int[][] grid) {
+        int m=grid.length;
+        int n=grid[0].length;
+        return aux(0,0,grid,m,n);
+    }
+}
+
+//MEMORIZATION
+//TC=O(N*M) SC=O(N*M)
+class Solution {
+    public int aux(int i, int j, int[][] grid, int m,int n, int dp[][])
+    {
+         if(i>=m ||j>=n)
+        {
+            return (int)1e9;
+        }
+        else if(i==m-1 && j==n-1)
+        {
+            return grid[i][j];
+        }
+        if(dp[i][j]!=-1)
+            return dp[i][j];
+        int left=grid[i][j]+aux(i+1,j,grid,m,n,dp);
+        int down=grid[i][j]+aux(i,j+1,grid,m,n,dp);
+        return dp[i][j]=Math.min(left,down);
+    }
+    public int minPathSum(int[][] grid) {
+        int m=grid.length;
+        int n=grid[0].length;
+        int dp[][]=new int[m][n];
+        for(int i=0;i<m;i++)
+            Arrays.fill(dp[i],-1);
+        return aux(0,0,grid,m,n,dp);
+    }
+}
+
+//BOTTOM UP DP
+// TC=O(N*M) SC=O(N*M)
+class Solution {
+    
+    public int minPathSum(int[][] grid) {
+        int m=grid.length;
+        int n=grid[0].length;
+        int dp[][]=new int[m+1][n+1];
+        for(int i=m;i>=0;i--)
+        {
+            for(int j=n;j>=0;j--)
+            {
+                if(i==m || j==n)
+                    dp[i][j]=(int)1e9;
+                else if(i==m-1 && j==n-1)
+                    dp[i][j]=grid[i][j];
+                else
+                {
+                    int left=grid[i][j]+dp[i+1][j];
+                    int down=grid[i][j]+dp[i][j+1];
+                    dp[i][j]=Math.min(left,down);
+                }
+            }
+        }
+        return dp[0][0];
+    }
+}
+
+//BOTTOM UP DP SAPCE OPTIMIZED
+//TC =O(N*M) SC=O(N)
+class Solution {
+    
+    public int minPathSum(int[][] grid) {
+        int m=grid.length;
+        int n=grid[0].length;
+        int prev[]=new int[n+1];
+        for(int i=m;i>=0;i--)
+        {
+            int curr[]=new int[n+1];
+            for(int j=n;j>=0;j--)
+            {
+                if(i==m || j==n)
+                    curr[j]=(int)1e9;
+                else if(i==m-1 && j==n-1)
+                    curr[j]=grid[i][j];
+                else
+                {
+                    int left=grid[i][j]+prev[j];
+                    int down=grid[i][j]+curr[j+1];
+                    curr[j]=Math.min(left,down);
+                }
+            }
+            prev=curr;
+        }
+        return prev[0];
+    }
+}

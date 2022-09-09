@@ -1,0 +1,33 @@
+//MAXIMUM PATH SUM
+//TC=O(N) SC=O(N)
+
+For each node there can be four ways that the max path goes through the node: 
+1. Node only 
+2. Max path through Left Child + Node 
+3. Max path through Right Child + Node 
+4. Max path through Left Child + Node + Max path through Right Child
+The idea is to keep trace of four paths and pick up the max one in the end. 
+An important thing to note is, root of every subtree need to return maximum path sum such that at most one child of root is involved.
+This is needed for parent function call.
+
+class Solution {
+    public int aux(TreeNode root, int ans[])
+    {
+        if(root==null)
+            return 0;
+        int leftMax=aux(root.left,ans);
+        int rightMax=aux(root.right,ans);
+        int whatToReturn=Math.max(Math.max(leftMax,rightMax)+root.val,root.val);
+        //HERE WE ARE TAKING MAXIMUM OF ALL 4 CASES, WHATTORETURN ALREADY HANDLED 3 CASES(NODE ALONE, NODE + LEFT, NODE+RIGHT).. SO WE JUST NEED TO CHK 
+        MAX BETWEEN WHATtoreturn and case(node+left+right)
+        int whatIsMaximum=Math.max(whatToReturn, leftMax+rightMax+root.val);
+        ans[0]=Math.max(ans[0],whatIsMaximum);
+        return whatToReturn;
+    }
+    public int maxPathSum(TreeNode root) {
+        int ans[]=new int[1];
+        ans[0]=Integer.MIN_VALUE;
+        aux(root,ans);
+        return ans[0];
+    }
+}

@@ -1,0 +1,113 @@
+//MINIMUM CUTS REQUIRED TO MAKE ALL THE SUB STRINGS PALINDROME
+
+//RECURSION
+TC=EXPONENTIAL
+
+class Solution{
+    static boolean isPalindrome(int i, int j, String str)
+    {
+        while(i<j)
+        {
+            if(str.charAt(i)!=str.charAt(j))
+                return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+    static int fun(int i, int j, String str)
+    {
+        if(i==j)
+            return 0;  //single element so no cuts needed,already  a palindrome
+            if(isPalindrome(i, j, str))
+                return 0;  // already a palindrome, no cuts needed
+        int mini=Integer.MAX_VALUE;
+        for(int k=i;k<j;k++)
+        {
+            int cuts=1+fun(i,k,str)+fun(k+1,j,str);
+            mini=Math.min(mini,cuts);
+        }
+        return mini;
+    }
+    static int palindromicPartition(String str)
+    {
+        // code here
+        return fun(0,str.length()-1,str);
+        
+    }
+}
+
+//MEMORIZATION
+//TC=O(N*n*n) SC=O(N*n)+O(N)
+class Solution{
+    static boolean isPalindrome(int i, int j, String str)
+    {
+        while(i<j)
+        {
+            if(str.charAt(i)!=str.charAt(j))
+                return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+    static int fun(int i, int j, String str, int dp[][])
+    {
+        if(i==j)
+            return 0;  //single element so no cuts needed,already  a palindrome
+            if(isPalindrome(i, j, str))
+                return 0;  // already a palindrome, no cuts needed
+                if(dp[i][j]!=-1)
+                    return dp[i][j];
+        int mini=Integer.MAX_VALUE;
+        for(int k=i;k<j;k++)
+        {
+            int cuts=1+fun(i,k,str,dp)+fun(k+1,j,str,dp);
+            mini=Math.min(mini,cuts);
+        }
+        return dp[i][j]= mini;
+    }
+    static int palindromicPartition(String str)
+    {
+        // code here
+        int n=str.length();
+        int dp[][]=new int[n][n];
+        for(int i=0;i<n;i++)
+            Arrays.fill(dp[i],-1);
+        return fun(0,str.length()-1,str,dp);
+        
+    }
+}
+
+//TABULATION
+
+static int palindromicPartition(String str)
+    {
+        // code here
+        
+        int n=str.length();
+        int dp[][]=new int[n][n];
+        
+        for(int i=n-1;i>=0;i--)
+        {
+            for(int j=i;j<n;j++)
+            {
+                if(i==j)
+                    dp[i][j]=0;
+                else if(isPalindrome(i, j, str))
+                    dp[i][j]=0;
+                else
+                {
+                     int mini=Integer.MAX_VALUE;
+                     for(int k=i;k<j;k++)
+                     {
+                        int cuts=1+dp[i][k]+dp[k+1][j];
+                        mini=Math.min(mini,cuts);
+                     }
+                     dp[i][j]=mini;
+                }
+            }
+        }
+        return dp[0][n-1];
+        
+    }

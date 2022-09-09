@@ -1,0 +1,71 @@
+//CLIMBING STAIRS
+//INITIALLY STANDING AT STAIR 0, NO OF WAYS TO REACH NTH STAIR. AT EACH STEP WE CAN TAKE 1 OR 2 STEP
+
+//RECURSION TC=EXPONENTIAL SC=O(N)
+//BASE CASE IS IF N==0 THEN NO OF WAYS TO REACH 0TH STAIR IS 1.THIS IS REQUIRED AS FOR N=2, THERE IS 2 WAY.
+// AND RECURSION OF N=2 COMES FROM F(1)+F(0). SO F(0) MUST BE 1 SO THAT RECURSION WORKS FINE
+//ALSO N==1 IS 1 AS THERE IS ONE WAY TO REACH N=1 STAIR AND WE NEED TO DEFINE IT AS BASE CASE BECAUSE OTHERWISE IT WILL 
+//CALL F(1-2)=F(-1) WHICH IS NEGATIVE AND ALSO NOT A VALID STAIR
+
+class Solution {
+    public int climbStairs(int n) {
+        if(n<=1)
+            return 1;
+        return climbStairs(n-2)+climbStairs(n-1);
+    }
+}
+
+//MEMORIZATION TC=O(N) SC=O(N)+O(N)
+
+class Solution {
+    public int climbStairsUtil(int n, int dp[])
+    {   if(dp[n]!=-1)
+            return dp[n];
+        if(n<=1)
+            return dp[n]=1;
+        return dp[n]=climbStairsUtil(n-2,dp)+climbStairsUtil(n-1,dp);
+    }
+    public int climbStairs(int n) {
+        int dp[]=new int[n+1];
+        Arrays.fill(dp,-1);
+        climbStairsUtil(n,dp);
+        return dp[n];
+        
+    }
+}
+
+//BOTTOM-UP DP TC=O(N) SC=O(N)
+
+class Solution {
+    public int climbStairs(int n) {
+        if(n<=1)
+            return 1;
+        int dp[]=new int[n+1];
+        dp[0]=1;
+        dp[1]=1;
+        for(int i=2;i<=n;i++)
+            dp[i]=dp[i-1]+dp[i-2];
+        return dp[n];
+        
+    }
+}
+
+//SPACE OPTIMIZED TC=O(N) SC=O(1)
+
+class Solution {
+    public int climbStairs(int n) {
+        if(n<=1)
+            return 1;
+        int previous=1;
+        int elementBeforePrevious=1;
+        for(int i=2;i<=n;i++)
+        {
+            int current=previous+elementBeforePrevious;
+            elementBeforePrevious=previous;
+            previous=current;
+        }
+            
+        return previous;
+        
+    }
+}

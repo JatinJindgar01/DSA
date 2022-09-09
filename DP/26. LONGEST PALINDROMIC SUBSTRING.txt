@@ -1,0 +1,107 @@
+//LONGEST PALINDROMIC SUBSTRING
+
+//TC=O(N*N*N) SC=O(1)
+class Solution {
+    public boolean isPalin(String s, int i, int j)
+    {
+        while(i<j)
+        {
+            if(s.charAt(i)!=s.charAt(j))
+                return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+    public String longestPalindrome(String s) {
+        int l=-1;
+        int r=-1;
+        int gm=0;
+        for(int i=0;i<s.length();i++)
+        {
+            for(int j=i;j<s.length();j++)
+            {
+                if(isPalin(s,i,j) && gm<j-i+1)
+                {
+                    gm=j-i+1;
+                    l=i;
+                    r=j;
+                }
+            }
+        }
+        System.out.println(l+" "+r);
+        return s.substring(l,r+1);
+    }
+}
+
+
+
+class Solution {
+    public String longestPalindrome(String s) {
+        int n=s.length();
+        int dp[][]=new int[n][n];
+        int max=0;
+        int ni=-1;
+        int nj=-1;
+        for(int i=n-1;i>=0;i--)
+        {
+            for(int j=n-1;j>=i;j--)
+            {
+                //ONE LENGTH STRING ALWAYS A PALINDROME
+                if(i==j)
+                {
+                    dp[i][j]=1;
+                    if(max<j-i+1)
+                    {
+                        max=j-i+1;
+                        ni=i;
+                        nj=j;
+                    }
+                }
+                else if(j==i+1)//2 character string
+                {
+                    if(s.charAt(i)==s.charAt(j))
+                    {
+                        dp[i][j]=1;
+                    if(max<j-i+1)
+                    {
+                        max=j-i+1;
+                        ni=i;
+                        nj=j;
+                    }
+                    }
+                    else
+                    {
+                        dp[i][j]=0;
+                    }
+                }
+                else
+                {
+                    if(s.charAt(i)==s.charAt(j) && dp[i+1][j-1]==1)
+                    {
+                        dp[i][j]=1;
+                        if(max<j-i+1)
+                    {
+                        max=j-i+1;
+                        ni=i;
+                        nj=j;
+                    }
+                    }
+                    else
+                    {
+                        dp[i][j]=0;
+                    }
+                }
+            }
+        }
+        // for(int i=0;i<n;i++)
+        // {
+        //     for(int j=0;j<n;j++)
+        //     {
+        //         System.out.print(dp[i][j]+" ");
+        //     }
+        //     System.out.println();
+        // }
+        return s.substring(ni,nj+1);
+    }
+}

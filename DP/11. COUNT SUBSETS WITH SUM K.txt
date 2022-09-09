@@ -1,0 +1,139 @@
+//COUNT SUBSETS WITH SUM K
+
+//RECURSION
+//TC=O(2^N) SC=O(N)
+class Solution{
+    
+   public static int fun(int ind, int arr[], int target)
+    {
+          if(ind<0)
+          {
+              if(target==0)
+              return 1;
+              else 
+              return 0;
+          }
+          int nonTake=fun(ind-1,arr,target);
+          int take=0;
+          if(arr[ind]<=target)
+            take=fun(ind-1,arr,target-arr[ind]);
+           return take+nonTake;
+        
+    }
+
+    static Boolean findWays(int N, int arr[], int sum){
+        // code here
+        return fun(N-1,arr,sum);
+    }
+}
+
+
+//MEMORIZATION
+//TC=O(N*sum) SC=O(N*SUM)+ O(N)
+class Solution{
+    
+   public static int fun(int ind, int arr[], int target,int dp[][])
+    {
+        if(ind<0)
+	{
+	   if(target==0)
+          	return 1;
+	   else
+		return 0;
+	}
+          if(dp[ind][target]!=-1)
+          return dp[ind][target];
+          int nonTake=fun(ind-1,arr,target,dp);
+          int take=0;
+          if(arr[ind]<=target)
+            take=fun(ind-1,arr,target-arr[ind],dp);
+           return dp[ind][target]=take+nonTake;
+        
+    }
+
+    static Boolean findWays(int N, int arr[], int sum){
+        // code here
+        int dp[][]=new int[N][sum+1];
+        for(int i=0;i<dp.length;i++)
+        {
+            Arrays.fill(dp[i],-1);
+        }
+        return fun(N-1,arr,sum,dp);
+    }
+}
+
+//TABULATION
+//TC=O(N*sum) SC=O(N*SUM)
+class Solution{
+    
+
+    static Boolean findWays(int N, int arr[], int sum){
+        // code here
+        //-1,0,1,2,n-1 FOR ind variable
+        //do a co-ordinate shift
+        // 0,1,2,3,n-1 FOR TARGET VARIABLE
+        int dp[][]=new int[N+1][sum+1];
+        for(int ind=0;ind<=N;ind++)
+        {
+            for(int target=0;target<=sum;target++)
+            {
+                 if(ind==0)
+                {
+                    if(target==0)
+                    dp[ind][target]=1;
+                    else
+                    dp[ind][target]=0;
+                }
+                else
+                {
+                    int nonTake=dp[ind-1][target];
+                    int take=0;
+                    if(arr[ind-1]<=target)
+                        take=dp[ind-1][target-arr[ind-1]];
+                     dp[ind][target]=take+nonTake;
+                }
+                
+            }
+        }
+        return dp[N][sum];
+    }
+}
+
+//SPACE OPTIMIZATION
+//TC=O(N*sum) SC=O(N)
+class Solution{
+    
+
+    static Boolean findWays(int N, int arr[], int sum){
+        // code here
+        //-1,0,1,2,n-1
+        //do a co-ordinate shift
+        
+        int prev[]=new int[sum+1];
+        for(int ind=0;ind<=N;ind++)
+        {
+            int curr[]=new int[sum+1];
+            for(int target=0;target<=sum;target++)
+            {
+               if(ind==0)
+                {
+                    if(target==0)
+                    curr[target]=1;
+                    else
+                    curr[target]=0;
+                }
+                else
+                {
+                    int nonTake=prev[target];
+                    int take=0;
+                    if(arr[ind-1]<=target)
+                        take=prev[target-arr[ind-1]];
+                     curr[target]=take+nonTake;
+                }
+                
+            }
+            prev=curr;
+        }
+        return prev[sum];
+    }
+}

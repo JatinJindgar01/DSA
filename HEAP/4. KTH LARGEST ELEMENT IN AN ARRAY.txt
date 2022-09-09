@@ -1,0 +1,31 @@
+//Kth LARGEST ELEMENT IN AN ARRAY
+
+//BRUTE TC=O(NLOGN) SC=O(1)
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        Arrays.sort(nums);
+        int index=nums.length-k;
+        return nums[index];
+    }
+}
+
+//BETTER TC=O(NLOGK) SC=O(K)
+//USE A MIN HEAP AND OUR AIM IS TO INSERT THE K LARGEST ELEMENTS IN THE HEAP. ONCE THAT IS DONE, THE ROOT WILL BE THE KTH LARGEST.
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> pq=new PriorityQueue<>();
+        for(int i=0;i<k;i++)
+        {
+            pq.add(nums[i]);
+        }
+        for(int i=k;i<nums.length;i++)
+        {
+            if(nums[i]>pq.peek())
+            {
+                pq.remove();
+                pq.add(nums[i]);
+            }
+        }
+        return pq.peek();
+    }
+}

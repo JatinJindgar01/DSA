@@ -1,0 +1,47 @@
+//INORDER SUCCESSOR
+
+//RECURSIVE TC=O(N) SC=O(N)
+
+TreeNode Findsuccessor(TreeNode root, TreeNode p)
+{
+TreeNode successor=null;
+aux(root,p,successor);
+return successor;
+}
+void aux(TreeNode root, TreeNode p, TreeNode successor)
+{
+if(root==null)
+return;
+else if(root.data<=p.data)
+aux(root.right,p,successor);
+else
+{
+successor=root;
+aux(root.left,p,successor);
+}
+}
+
+
+
+//ITERATIVE TC=O(N) SC=O(1)
+
+
+TreeNode Findsuccessor(TreeNode root, TreeNode p)
+{
+
+TreeNode successor=null;
+TreeNode curr=root;
+if(root==null)
+return null;
+while(curr!=null)
+{
+if(curr.data<=p.data)
+curr=curr.right;
+else
+{
+successor=root;
+curr=curr.left;
+}
+}
+return successor;
+}

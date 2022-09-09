@@ -1,0 +1,36 @@
+//BOTTOM VIEW OF BINARY TREE
+//TC=O(N) SC=O(N)
+
+class Solution
+{
+    class QueueMy
+    {
+        int hd;
+        Node node;
+        QueueMy(int hd, Node node)
+        {
+            this.hd=hd;
+            this.node=node;
+        }
+    }
+    //Function to return a list containing the bottom view of the given tree.
+    public ArrayList <Integer> bottomView(Node root)
+    {
+        // Code here
+        TreeMap<Integer, Integer> mp=new TreeMap<>();
+        Queue<QueueMy> q=new LinkedList<>();
+        q.add(new QueueMy(0,root));
+        while(q.size()>0)
+        {
+            QueueMy p=q.poll();
+            mp.put(p.hd,p.node.data);
+            if(p.node.left!=null)
+            q.add(new QueueMy(p.hd-1,p.node.left));
+            if(p.node.right!=null)
+            q.add(new QueueMy(p.hd+1,p.node.right));
+        }
+        Collection<Integer> c=mp.values();
+        ArrayList<Integer> ans=new ArrayList<>(c);
+        return ans;
+    }
+}

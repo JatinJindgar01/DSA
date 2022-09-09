@@ -1,0 +1,58 @@
+//MORRIS PREORDER
+//TC=O(N) SC=O(N)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> ans=new ArrayList<>();
+        TreeNode curr=root;
+        //when curr is equal to null it means all the nodes are done. It will happen when the right most node of tree is done as well.
+        while(curr!=null)
+        {   //No one in left subtree so just print the root node and go to right
+            if(curr.left==null)
+            {
+                ans.add(curr.val);
+                curr=curr.right;
+            }
+            else
+            {
+                //if left subtree is not null, it means we need to process left subtree                      before processing the curr
+                
+                //go to the rightmost node of the left subtree y using prev pointer
+                TreeNode prev=curr.left;
+                //the prev pointer will stop if it finds a null or a curr node in right of                      it
+                while(prev.right!=null && prev.right!=curr)
+                {
+                    prev=prev.right;
+                }
+                //if prev.right is null it means we are visiting the left subtree for the first tym. so make prev.right point to curr, print the curr and go to curr=curr.left
+                if(prev.right==null)
+                {
+                    prev.right=curr;
+                      ans.add(curr.val);
+                    curr=curr.left;
+                }
+                //if prev.right already poing to curr, it means left subtree is already processed. make the prev right point to null. and move to right
+                else
+                {
+                    prev.right=null;
+                    curr=curr.right;
+                }
+            }
+        }
+        return ans;
+    }
+}

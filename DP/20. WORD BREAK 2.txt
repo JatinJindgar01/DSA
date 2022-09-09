@@ -1,0 +1,70 @@
+//WORD BREAK2
+//tc=2^n
+class Solution {
+    public void fun(int ind,String A, List<String> B,List<String> ans, String tmp)
+    {
+        if(ind==A.length())
+        {
+            ans.add(tmp.substring(0,tmp.length()-1));
+            return;
+        }
+          
+        for(int k=ind;k<A.length();k++)
+        {
+            if(B.contains(A.substring(ind,k+1)))
+            {
+                
+                fun(k+1,A,B,ans,tmp+A.substring(ind,k+1)+" ");
+                
+            }
+           
+        }
+  
+    }
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        int n=s.length();
+        List<String> ans=new ArrayList<>();
+        String tmp="";
+        fun(0,s,wordDict,ans,tmp);
+        return ans;
+    }
+}
+
+//hashset for constant search time
+
+class Solution {
+    public void fun(int ind,String A, List<String> B,List<String> ans, String tmp,HashSet<String> h)
+    {
+        if(ind==A.length())
+        {
+            ans.add(tmp.substring(0,tmp.length()-1));
+            return;
+        }
+          
+        for(int k=ind;k<A.length();k++)
+        {
+            if(h.contains(A.substring(ind,k+1)))
+            {
+                
+                fun(k+1,A,B,ans,tmp+A.substring(ind,k+1)+" ",h);
+                
+            }
+            
+                
+        }
+    
+        
+            
+    }
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        int n=s.length();
+        List<String> ans=new ArrayList<>();
+        HashSet<String> h=new HashSet<>();
+        for(int i=0;i<wordDict.size();i++)
+            h.add(wordDict.get(i));
+        String tmp="";
+        fun(0,s,wordDict,ans,tmp,h);
+        return ans;
+    }
+}
+

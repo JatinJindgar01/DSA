@@ -1,0 +1,32 @@
+//LEFT VIEW OF BINARY TREE 
+
+//TC=O(N) SC=O(N)
+
+class Tree
+{
+    //Function to return list containing elements of left view of binary tree.
+    ArrayList<Integer> leftView(Node root)
+    {
+      // Your code here
+      ArrayList<Integer> ans=new ArrayList<>();
+      if(root==null)
+      return ans;
+      Queue<Node> q=new LinkedList<>();
+      q.add(root);
+      while(q.size()>0)
+      {
+          int n=q.size();
+          for(int i=0;i<n;i++)
+          {
+              Node p=q.poll();
+              if(i==0)
+              ans.add(p.data);
+              if(p.left!=null)
+              q.add(p.left);
+              if(p.right!=null)
+              q.add(p.right);
+          }
+      }
+      return ans;
+    }
+}

@@ -1,0 +1,31 @@
+//cEIL IN A BST
+
+//iterative tc=o(n) sc=o(1)
+
+public class Solution {
+
+    public  static int findCeil(TreeNode<Integer> root, int X) {
+
+        // Write your code here
+        int ans=-1;
+if(root==null)
+return -1;
+TreeNode curr=root;
+while(curr!=null)
+{
+if((int)curr.data==X)
+    return X;
+else if((int)curr.data>X)
+{
+    ans=(int)curr.data;
+    curr=curr.left;
+}
+else
+{
+curr=curr.right;
+}
+}
+return ans;
+
+    }
+}

@@ -1,0 +1,82 @@
+//LONGEST COMMON PREFIX
+
+class Node
+{
+    Node links[]=new Node[26];
+    boolean flag=false;
+    int lc=0;
+    public Node()
+    {
+        
+    }
+    public boolean containsKey(char ch)
+    {
+        return (links[ch-'a']!=null);
+    }
+    public Node get(char ch)
+    {
+        return links[ch-'a'];
+    }
+    void put(char ch,Node node)
+    {
+        links[ch-'a']=node;
+        lc++;
+    }
+    void setEnd()
+    {
+        flag=true;
+    }
+    boolean isEnd()
+    {
+        return flag;
+    }
+    int getLink()
+    {
+              return lc;  
+    }
+       
+}
+class Trie
+{
+public static Node root;
+Trie(){
+    root=new Node();
+}
+    public static void insert(String word)
+    {
+        Node node=root;
+        for(int i=0;i<word.length();i++)
+        {
+            if(!node.containsKey(word.charAt(i)))
+                node.put(word.charAt(i), new Node());
+            node=node.get(word.charAt(i));
+        }
+        node.setEnd();
+    }
+    public String search(String word)
+    {
+        Node node=root;
+        String d="";
+        for(int i=0;i<word.length();i++)
+        {  
+            if(node.getLink()==1 && node.isEnd()==false)
+            {
+                d+=word.charAt(i);
+                node=node.get(word.charAt(i));
+            }
+                else
+                    return d;
+        }
+         return d;
+    }
+    
+}
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        Trie obj=new Trie();
+        for(int i=0;i<strs.length;i++)
+            obj.insert(strs[i]);
+        return obj.search(strs[0]);
+        
+    }
+}

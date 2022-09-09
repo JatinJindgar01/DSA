@@ -1,0 +1,126 @@
+//FIND MEDIAN FROM DATA STREAM
+
+//tc=o(n*n*logn) sc=o(n)
+class MedianFinder {
+    ArrayList<Integer> arr;
+    public MedianFinder() {
+       arr=new ArrayList<>(); 
+    }
+    
+    public void addNum(int num) {
+        arr.add(num);
+    }
+    
+    public double findMedian() {
+        Collections.sort(arr);
+        int n=arr.size();
+        if(n%2!=0)
+        {
+            int ind=(n-1)/2;
+            return arr.get(ind);
+        }
+        else
+        {
+            int ind1=(n-1)/2;
+            int ind2=ind1+1;
+            return (arr.get(ind1)+arr.get(ind2))/2.0;
+        }
+    }
+}
+
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
+
+////tc=o(n*n) sc=o(n)
+class MedianFinder {
+    ArrayList<Integer> arr;
+    public MedianFinder() {
+       arr=new ArrayList<>(); 
+    }
+    
+    public void addNum(int num) {
+        int n=arr.size();
+        boolean added=false;
+        for(int i=0;i<n;i++){
+            if(num<=arr.get(i))
+            {
+                arr.add(i,num);
+                added=true;
+                break;
+            }
+        }
+        if(!added)
+            arr.add(num);
+       
+    }
+    
+    public double findMedian() {
+        
+        int n=arr.size();
+        if(n%2!=0)
+        {
+            int ind=(n-1)/2;
+            return arr.get(ind);
+        }
+        else
+        {
+            int ind1=(n-1)/2;
+            int ind2=ind1+1;
+            return (arr.get(ind1)+arr.get(ind2))/2.0;
+        }
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
+
+
+
+//TC=NLOG(N) SC=O(N)
+
+class MedianFinder {
+    PriorityQueue<Integer> minQueue;
+    PriorityQueue<Integer> maxQueue;
+    public MedianFinder() {
+        minQueue=new PriorityQueue<>();
+        maxQueue=new PriorityQueue<>(Collections.reverseOrder());
+    }
+    
+    public void addNum(int num) {
+        if(maxQueue.size()==0 || maxQueue.peek()>num)
+           maxQueue.add(num);
+        else
+            minQueue.add(num);
+        
+        if(maxQueue.size()>minQueue.size()+1)
+            minQueue.add(maxQueue.poll());
+        else if(minQueue.size()>maxQueue.size())
+            maxQueue.add(minQueue.poll());
+    }
+    
+    public double findMedian() {
+        if(maxQueue.size()==minQueue.size())
+            return (double)(maxQueue.peek()+minQueue.peek())/2;
+        else
+            return (double)(maxQueue.peek());
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
+
+
+

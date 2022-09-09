@@ -1,0 +1,55 @@
+//PRINT LONGEST COMMON SUBSTRING
+//TABLATION+BACKTRACKING
+//TC=O(M*N) SC=O(M*N)
+public class Solution {
+
+	public static int lcs(String s1, String s2) {
+		//Your code goes here
+        int m=s1.length();
+        int n=s2.length();
+        //ind1   -1,0 ,1,2,3,m-1  (including corner cases)
+        //ind2    -1,0,1,2,3,n-1  (including corner cases)
+        //IN DP ARRAY WE CAN'T REPRESENT -1, SO DO A CO-ORDINATE SHIFT
+        // SO ind1   0 ,1,2,3,m  (including corner cases)
+        //ind2       0,1,2,3,n  (including corner cases)
+        //base case now is not at -1, but at 0
+         int dp[][]=new int[m+1][n+1];
+         for(int ind1=0;ind1<=m;ind1++)
+         {
+             for(int ind2=0;ind2<=n;ind2++)
+             {
+                 if(ind1==0 || ind2==0)
+                 {    dp[ind1][ind2]=0;
+                      continue;
+                 }
+                 if(s1.charAt(ind1-1)==s2.charAt(ind2-1))
+                     dp[ind1][ind2]=1+dp[ind1-1][ind2-1];
+                 else
+                     dp[ind1][ind2]=Math.max(dp[ind1-1][ind2],dp[ind1][ind2-1]);  
+             }
+         }
+         //BACKTRACK TO PRINT LCS  //TC=O(M+N)
+        String ans="";
+	int i=m;
+	int j=n;
+        while(i<=1 && j<=1)
+        {
+                if(s1.charAt(i-1)==s2.charAt(j))
+                {
+                    tmp=s1.charAt(i-1)+tmp;
+                    i--;
+                    j--;
+                }
+               else if(dp[i-1][j]>dp[i][j-1])
+               {
+                   i--;
+               }
+               else
+               {
+                   j--;
+               }
+          }
+        
+    }
+
+}

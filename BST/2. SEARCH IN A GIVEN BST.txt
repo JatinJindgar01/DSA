@@ -1,0 +1,37 @@
+//SEARCH IN A GIVEN BST
+//RECURSIVE TC=O(N) SC=O(N)
+
+class Solution {
+    public TreeNode searchBST(TreeNode root, int val) {
+        //RECURSIVE. IF ROOT.VAL==VAL THEN RETURN THE NODE. IF VAL IS GREATER SEARCH RIGHT ELSE SEARCH LEFT
+        if(root==null)
+            return null;
+        else if(root.val==val)
+            return root;
+        else if(root.val<val)
+            return searchBST(root.right,val);
+        else
+            return searchBST(root.left,val);
+    }
+}
+
+//ITERATIVE
+TC=O(N) SC=O(1)
+
+class Solution {
+    public TreeNode searchBST(TreeNode root, int val) {
+        if(root==null)
+            return null;
+        TreeNode curr=root;
+        while(curr!=null)
+        {
+            if(curr.val==val)
+                return curr;
+            else if(curr.val<val)
+                curr=curr.right;
+            else
+                curr=curr.left;
+        }
+        return null;
+    }
+}

@@ -1,0 +1,45 @@
+//MAXIMUM PRODUCT SUBARRAY
+
+//BRUTE TC=O(N*N) SC=O(1)
+
+class Solution {
+    public int maxProduct(int[] nums) {
+        int ans=Integer.MIN_VALUE;
+        int n=nums.length;
+        for(int i=0;i<n;i++)
+        {
+            int tmp=1;
+            for(int j=i;j<n;j++)
+            {
+                tmp=tmp*nums[j];
+                ans=Math.max(ans,tmp);
+            }
+        }
+        return ans;
+    }
+}
+
+//KADANE ALGORITHM
+//TC=O(N) SC=O(1)
+/*MAINTAIN 2 VARIABLES MIN_TILL_HERE AND MAX_TILL_HERE WHICH DENOTES THE MINIMUM AND MAXIMUM FOUND SO FAR
+NOW AT A PARTICULAR INDEX, WE NEED TO UPDATE BOTH THE VARIABLES, SO ANS SCOUND BE 3 THINGS, EITHER THE NUMBER ITSELF OR NUM*MIN OT NUM*MAX
+FINAL ANSWER IS ALWAYS FOUND BY MAX SO FAR. WE MAINTAIN MIN VARIABLLE AS AT A PARTICULAR INDEX IT IS POSSIBLE TTHAT NUMS IS NEGAATIVE AND -*-=+.
+SO MIN VARIABLE CAN ALSO RESULT IN MAXIMUM AS WELL*/
+
+class Solution {
+    public int maxProduct(int[] nums) {
+        int ans=nums[0];
+        int min_till_here=nums[0];
+        int max_till_here=nums[0];
+        int n=nums.length;
+        for(int i=1;i<n;i++)
+        {
+            int tmp=max_till_here*nums[i];
+            max_till_here=Math.max(tmp,Math.max(min_till_here*nums[i],nums[i]));
+            min_till_here=Math.min(tmp,Math.min(min_till_here*nums[i],nums[i]));
+            ans=Math.max(ans,max_till_here);
+        }
+        return ans;
+        
+    }
+}

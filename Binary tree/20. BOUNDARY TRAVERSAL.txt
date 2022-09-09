@@ -1,0 +1,63 @@
+//BOUNDARY TRAVERSAL
+// TC=O(3*N) SC=O(3*N)
+
+class Solution
+{
+    public boolean isLeaf(Node node)
+    {
+        if(node.left==null && node.right==null)
+        return true;
+        else
+        return false;
+    }
+    public void leftBoundary(Node node, ArrayList<Integer> ans)
+    {
+        Node curr=node.left;
+        while(curr!=null)
+        {
+            if(isLeaf(curr)==false)
+            ans.add(curr.data);
+            if(curr.left!=null)
+            curr=curr.left;
+            else
+            curr=curr.right;
+        }
+    }
+     public void addLeaves(Node node, ArrayList<Integer> ans)
+    {
+       if(node==null)
+       return;
+       if(isLeaf(node)==true)
+       ans.add(node.data);
+       addLeaves(node.left,ans);
+       addLeaves(node.right,ans);
+    }
+    public void rightBoundary(Node node, ArrayList<Integer> ans)
+    {
+        Node curr=node.right;
+        ArrayList<Integer> tmp=new ArrayList<>();
+        while(curr!=null)
+        {
+            if(isLeaf(curr)==false)
+            tmp.add(curr.data);
+            if(curr.right!=null)
+            curr=curr.right;
+            else
+            curr=curr.left;
+        }
+        for(int i=tmp.size()-1;i>=0;i--)
+        {
+            ans.add(tmp.get(i));
+        }
+    }
+	ArrayList <Integer> boundary(Node node)
+	{
+	    ArrayList<Integer> ans=new ArrayList<>();
+	    if(isLeaf(node)==false)
+	    ans.add(node.data);
+	    leftBoundary(node,ans);
+	    addLeaves(node,ans);
+	    rightBoundary(node,ans);
+	    return ans;
+	}
+}

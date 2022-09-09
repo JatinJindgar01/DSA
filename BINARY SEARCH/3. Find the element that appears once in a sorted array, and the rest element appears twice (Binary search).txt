@@ -1,0 +1,41 @@
+Find the element that appears once in a sorted array, and the rest element appears twice (Binary search)
+tc=logn sc=o(1)
+class Solution {
+    public int singleNonDuplicate(int[] nums) {
+        int low=0;
+        int high=nums.length-2;
+        while(low<=high)
+        {
+            int mid=(low+high)/2;
+            
+                if((mid%2!=0 && nums[mid-1]==nums[mid])|| (mid%2==0 && nums[mid+1]==nums[mid]))
+                    low=mid+1;
+                else
+                    high=mid-1;
+            
+            
+        }
+        return nums[low];
+    }
+}
+ 
+
+//better way of writing
+class Solution {
+    public int singleNonDuplicate(int[] nums) {
+        int low=0;
+        int high=nums.length-2;
+        while(low<=high)
+        {
+            int mid=(low+high)>>1;
+            
+                if(nums[mid]==nums[mid^1])
+                    low=mid+1;
+                else
+                    high=mid-1;
+            
+            
+        }
+        return nums[low];
+    }
+}

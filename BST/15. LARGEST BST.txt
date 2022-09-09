@@ -1,0 +1,41 @@
+//LARGEST BST
+//TC=O(N) SC=O(N)
+class Pair
+{
+    int maximum;
+    int minimum;
+    int length;
+    Pair(int minimum, int maximum, int length)
+    {
+        this.minimum=minimum;
+        this.maximum=maximum;
+        this.length=length;
+    }
+}
+class Solution{
+    public static Pair aux(Node root)
+    {
+        if(root==null)
+        {
+            return new Pair(Integer.MAX_VALUE,Integer.MIN_VALUE,0);   //RETURN 0 AS SIZE, AND SET OPPOSITE SO ALWAYS TRUE
+        }
+        Pair l=aux(root.left);
+        Pair r=aux(root.right);
+        //IS A BST
+        if(root.data>l.maximum && root.data<r.minimum)
+        {
+            return new Pair(Math.min(root.data,l.minimum),Math.max(root.data,r.maximum),l.length+r.length+1);
+        }
+       //NOT A BST
+        return new Pair(Integer.MIN_VALUE, Integer.MAX_VALUE,Math.max(l.length,r.length));
+    }
+    // Return the size of the largest sub-tree which is also a BST
+    static int largestBst(Node root)
+    {
+        // Write your code here
+        Pair ans=aux(root);
+        return ans.length;
+        
+    }
+    
+}

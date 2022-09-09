@@ -1,0 +1,49 @@
+//MERGE K SORTED ARRAYS
+
+// USING MIN HEAP
+//TC=NKLOGK SC=NK
+//Make a min heap of k size and put first element of every array in it
+// Till queue is not empty, poll and print the ans. Add the next element from the polled array to queue.
+
+class Pair implements Comparable<Pair>
+{
+    int val;
+    int arrayIndex;
+    int elementIndex;
+    Pair(int val, int arrayIndex, int elementIndex)
+    {
+        this.val=val;
+        this.arrayIndex=arrayIndex;
+        this.elementIndex=elementIndex;
+    }
+    public int compareTo(Pair other)
+    {
+        return this.val-other.val;
+    }
+}
+
+class Solution
+{
+    //Function to merge k sorted arrays.
+    public static ArrayList<Integer> mergeKArrays(int[][] arr,int K) 
+    {
+        // Write your code here.
+       PriorityQueue<Pair> pq=new PriorityQueue<>();
+       ArrayList<Integer> ans=new ArrayList<>();
+       for(int i=0;i<arr.length;i++)
+       {
+           pq.add(new Pair(arr[i][0],i,0));
+       }
+       
+       while(pq.size()>0)
+       {
+           Pair p=pq.poll();
+           ans.add(p.val);
+           p.elementIndex++;
+           if(p.elementIndex<arr[p.arrayIndex].length)
+           pq.add(new Pair(arr[p.arrayIndex][p.elementIndex],p.arrayIndex,p.elementIndex));
+       }
+       return ans;
+        
+    }
+}

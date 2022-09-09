@@ -1,0 +1,22 @@
+//kth smallest element in a bst
+
+//recursive tc=o(n) sc=o(n)
+
+class Solution {
+    public void help(TreeNode root, int[] k, int ans[])
+    {
+        if(root==null)
+            return;
+        help(root.left,k,ans);
+        //System.out.print(root.val+" ");
+        k[0]--;
+        if(k[0]==0)
+            ans[0]=root.val;
+        help(root.right,k,ans);
+    }
+    public int kthSmallest(TreeNode root, int k) {
+        int ans[]=new int[1];
+        help(root,new int[]{k},ans);
+        return ans[0];
+    }
+}

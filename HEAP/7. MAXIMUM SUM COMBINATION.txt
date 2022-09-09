@@ -1,0 +1,104 @@
+//MAXIMUM SUM COMBINATION
+//MAKE ALL COMBINATIONS AND PUT IN A MAX PRIORITY QUEUE, THEN PRINT TOP K ELEMENT OF PRIORITY QUEUE
+//TC=O(N*N*LOGN) SC=O(N*N)
+public class Solution {
+    public int[] solve(int[] A, int[] B, int C) {
+        PriorityQueue<Integer> pq=new PriorityQueue<>(Collections.reverseOrder());
+        int ans[]=new int[C];
+        for(int i=0;i<A.length;i++)
+        {
+            for(int j=0;j<B.length;j++)
+            {
+                pq.add(A[i]+B[j]);
+            }
+        }  
+        for(int i=0;i<C;i++)
+        {
+            ans[i]=pq.poll();
+        }
+        return ans;
+    }
+}
+
+
+//Max Heap
+//TC= O(NLOGN) SC=O(N)
+
+class Pair
+{
+    int fi;
+    int si;
+    Pair(int fi, int si)
+    {
+        this.fi=fi;
+        this.si=si;
+    }
+    @Override public boolean equals(Object o)
+		{
+			if (o == null) {
+				return false;
+			}
+			if (!(o instanceof Pair)) {
+				return false;
+			}
+			Pair obj = (Pair)o;
+			return (fi == obj.fi && si == obj.si);
+		}
+
+		@Override public int hashCode()
+		{
+			return Objects.hash(fi, si);
+		}
+}
+class MaxSum implements Comparable<MaxSum>
+{
+    int fi;
+    int si;
+    int val;
+    MaxSum(int fi, int si, int val)
+    {
+        this.fi=fi;
+        this.si=si;
+        this.val=val;
+    }
+    
+    public int compareTo(MaxSum other)
+    {
+        return this.val-other.val;
+    }
+}
+
+
+public class Solution {
+    public int[] solve(int[] A, int[] B, int C) {
+        Arrays.sort(A);
+        Arrays.sort(B);
+        int n=A.length;
+        PriorityQueue<MaxSum> pq=new PriorityQueue<>(Collections.reverseOrder());
+        HashSet<Pair> h=new HashSet<>();
+        pq.add(new MaxSum(n-1,n-1,A[n-1]+B[n-1]));
+        h.add(new Pair(n-1,n-1));
+        
+        int ans[]=new int[C]; 
+        for(int i=0;i<C;i++)
+        {
+            MaxSum p=pq.poll();
+         //   System.out.println(p.val+" "+p.fi+" "+p.si);
+            ans[i]=p.val;
+            int l=p.fi;
+            int r=p.si;
+     
+            if(l>=0 && r-1>=0 && h.contains(new Pair(l,r-1))==false)
+            {
+                pq.add(new MaxSum(l,r-1,A[l]+B[r-1]));
+                h.add(new Pair(l,r-1));
+            }
+            if(l-1>=0 && r>=0 && h.contains(new Pair(l-1,r))==false)
+            {
+                pq.add(new MaxSum(l-1,r,A[l-1]+B[r]));
+                h.add(new Pair(l-1,r));
+            }
+        }
+        return ans;
+    }
+}

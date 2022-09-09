@@ -1,0 +1,64 @@
+//PRINT NTH FIBONAACI NUMBER(0 BASED INDEXING)
+
+//RECURSION TC=EXPONENTIAL SC=O(N)
+
+class Solution {
+    public int fib(int n) {
+        if(n<=1)
+        return n;
+        return fib(n-2)+fib(n-1);
+    }
+}
+
+//MEMORIZATION TC=O(N) SC=O(N)+O(N)(FOR STACK SPACE+DP ARRAY)
+
+class Solution {
+    public int aux(int n, int dp[])
+    {
+	if(dp[n]!=-1)
+            return dp[n];
+        if(n<=1)
+            return dp[n]=n;
+        return dp[n]=aux(n-2,dp)+fib(n-1,dp);
+    }
+    public int fib(int n) {
+        int dp[]=new int[n+1];
+        Arrays.fill(dp,-1);
+        aux(n,dp);
+	return dp[n];
+    }
+}
+
+//BOTTOM-UP DP TC=O(N) SC=O(N)(ONLY DP ARRAY)\
+
+class Solution {
+    public int fib(int n) {
+        if(n<=1)
+            return n;
+        int dp[]=new int[n+1];
+        dp[0]=0;
+        dp[1]=1;
+        for(int i=2;i<=n;i++)
+            dp[i]=dp[i-2]+dp[i-1];
+        return dp[n];
+    }
+}
+
+//SPACE OPTIMIZATION TC=O(N) SC=O(1)
+
+class Solution {
+    public int fib(int n) {
+        if(n<=1)
+            return n;
+        int elementBeforePrevious=0;
+        int previous=1;
+        for(int i=2;i<=n;i++)
+        {
+            int currentElement=elementBeforePrevious+previous;
+            elementBeforePrevious=previous;
+            previous=currentElement;
+        }
+        return previous;
+    }
+}
+

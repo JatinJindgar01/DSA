@@ -1,0 +1,262 @@
+//LONGEST INCREASING SUBSEQUENCE
+//RECURSION //TC=2^N SC=O(N)
+
+DEFINITION OF FUN(INDEX, PREV_INDEX)
+WHAT IS THE LIS STARTING FROM INDEX "INDEX" AND ENDING AT THE LAST INDEX OF ARRAY
+
+PREV_INDEX IS REQUIRED AS THAT WILL HELP US TO DECIDE WHETHER TO INCLUDE INDEX OR NOT
+
+
+class Solution {
+    public int fun(int nums[], int index, int prev_index)
+    {
+        if(index==nums.length)
+            return 0;
+        // NOT TAKE
+        int notTake=0+fun(nums,index+1,prev_index);
+        int take=0;
+        if(prev_index==-1 || nums[index]>nums[prev_index])
+            take=1+fun(nums,index+1,index);
+        return Math.max(take, notTake);
+    }
+    public int lengthOfLIS(int[] nums) {
+        int index=0;
+        int prev_index=-1;
+        return fun(nums, index, prev_index);
+    }
+}
+
+// MEMORIZATION
+//TC=O(N*N) SC=O(N*N) +O(N)
+
+class Solution {
+    public int fun(int ind, int prev_ind, int nums[], int dp[][])
+    {
+        if(ind==nums.length)
+            return 0;
+        if(dp[ind][prev_ind+1]!=-1)
+            return dp[ind][prev_ind+1];
+        int notTake=fun(ind+1,prev_ind,nums,dp);
+        int take=0;
+        if(prev_ind==-1 || nums[ind]>nums[prev_ind])
+            take=1+fun(ind+1,ind,nums,dp);
+        return dp[ind][prev_ind+1]=Math.max(notTake,take);
+    }
+    public int lengthOfLIS(int[] nums) {
+       //fun(ind, prev_ind) means Length of longest increasing subsequence starting at ind and //ending at n-1 index(end of array)
+        //prev_index is the index before me present in LIS
+        //for memorization
+        //ind 0,1,2,3,.....n-1
+        //prev_ind -1,0,1,2,3,4,.....n-2 // do a co-ordinate shift---> 0,1,2,....,n-1
+        int n=nums.length;
+        int dp[][]=new int[n][n];
+        for(int i=0;i<n;i++)
+        {
+            Arrays.fill(dp[i],-1);
+        }
+        return fun(0,-1,nums,dp);
+    }
+}
+
+
+//TABULATION
+//TC=O(N*N) SC=O(N*N)
+
+class Solution {
+
+    public int lengthOfLIS(int[] nums) {
+       //fun(ind, prev_ind) means Length of longest increasing subsequence starting at ind and          //ending at n-1 index(end of array)
+        //prev_index is the index before me present in LIS
+
+        int n=nums.length;
+        //for tabulation
+        //ind 0,1,2,3,.....n
+        //prev_ind -1,0,1,2,3,4,.....n-1 // do a co-ordinate shift---> 0,1,2,....,n
+        int dp[][]=new int[n+1][n+1];
+        for(int ind=n;ind>=0;ind--)
+        {
+            for(int prev_ind=n-1;prev_ind>=-1;prev_ind--)
+            {
+                if(ind==n)
+                {
+                    dp[ind][prev_ind+1]=0;
+                }
+                else 
+                {
+                    int notTake=dp[ind+1][prev_ind+1];
+                    int take=0;
+                    if(prev_ind==-1 || nums[ind]>nums[prev_ind])
+                         take=1+dp[ind+1][ind+1];
+                    dp[ind][prev_ind+1]=Math.max(notTake,take);
+                }
+            }
+        }
+        return dp[0][0];
+    }
+}
+
+//SPACE OPTIMIZATION
+//TC=O(N*N) SC=O(N)
+
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+       //fun(ind, prev_ind) means Length of longest increasing subsequence starting at ind and          //ending at n-1 index(end of array)
+        //prev_index is the index before me present in LIS
+     
+        int n=nums.length;
+       
+        int next[]=new int[n+1];
+        for(int ind=n;ind>=0;ind--)
+        { 
+            int curr[]=new int[n+1];
+            
+            for(int prev_ind=n-1;prev_ind>=-1;prev_ind--)
+            {
+                if(ind==n)
+                {
+                    curr[prev_ind+1]=0;
+                }
+                else 
+                {
+                    int notTake=next[prev_ind+1];
+                    int take=0;
+                    if(prev_ind==-1 || nums[ind]>nums[prev_ind])
+                         take=1+next[ind+1];
+                    curr[prev_ind+1]=Math.max(notTake,take);
+                }
+            }
+            next=curr;
+        }
+        return next[0];
+    }
+}
+
+//TABULATION METHOD
+//TC=O(N*N) SC=O(N)
+
+//WE FIND LIS ENDING AT EVERY INDEX. TO DO SO TRAVEL FROM INDEX 0 UP TO THAT INDEX AND SEE IF THAT
+//CAN BE INCLUDED WITH ME OR NOT. IF YES THEN ANS IS 1 + LIS AT THAT INDEX. TAKE MAXIMUM OF THESE
+//THEN TAKE MAXIMUM OF ALL THESE TO FINAL ANSWER
+
+class Solution {
+    public int lisEndingAtIndex(int nums[], int i, int dp[])
+    {   //IF FIRST INDEX IS THERE, THE NO ONE IS BEFORE IT, SO LIS ENDING AT 0 IS 1(THE ELEMENT ITSELF)
+        if(i==0)
+            return 1;
+        //TRAVERSE FOR ALL ELEMENTS BEFORE ME
+        for(int j=0;j<i;j++)
+        {
+            if(nums[j]<nums[i])
+                dp[i]=Math.max(1+dp[j],dp[i]);  
+        }
+        return dp[i];
+        
+    }
+    public int lengthOfLIS(int[] nums) {
+        int final_ans=1;
+        int n=nums.length;
+        int dp[]=new int[n];
+        //EVERYONE INITIALIZED TO 1 AS LIS AT ANY INDEX IS ALTLEAT 1(THE ELEMENT ITSELF)
+        for(int i=0;i<n;i++)
+            dp[i]=1;
+        //FIND LIS AT ALL INDEX AND TAKE MAXIMUM OF IT
+        for(int i=0;i<n;i++)
+        {
+            final_ans=Math.max(final_ans,lisEndingAtIndex(nums,i,dp));
+        }
+        return final_ans;
+    }
+}
+
+
+//PRINT LIS USING THE TABULATION METHOD
+//WE WILL MAINTAIN A HASH ARRAY WHICH IS INITIALIZED TO INDEX EARLIER. IT WILL BE UPDATED TO CONTAIN INDEX OF PREVIOUS ELEMENT IN LIS
+//TC=O(N*N) SC=O(N)
+
+class Solution {
+    public int lisEndingAtIndex(int nums[], int i, int dp[], int hash[])
+    {
+        if(i==0)
+            return 1;
+        for(int j=0;j<i;j++)
+        {
+            if(nums[j]<nums[i] && 1+dp[j]>dp[i])
+            {
+                dp[i]=1+dp[j];
+                hash[i]=j;
+            }
+                
+        }
+        return dp[i];
+        
+    }
+    public int lengthOfLIS(int[] nums) {
+        int final_ans=0;
+        int ind=-1;
+        int n=nums.length;
+        int dp[]=new int[n];
+        for(int i=0;i<n;i++)
+            dp[i]=1;
+        int hash[]=new int[n];
+        for(int i=0;i<n;i++)
+            hash[i]=i;
+        for(int i=0;i<n;i++)
+        {
+            int y=lisEndingAtIndex(nums,i,dp,hash);
+            if(y>final_ans)
+            {
+                final_ans=y;
+                ind=i;
+            }
+            
+        }
+        int print[]=new int[final_ans];
+        int k=final_ans-1;;
+        while(hash[ind]!=ind)
+        {
+           print[k]=nums[ind];
+            ind=hash[ind];
+            k--;
+        }
+        print[0]=nums[ind];
+        for(int g=0;g<print.length;g++)
+            System.out.print(print[g]+" ");
+        return final_ans;
+    }
+}
+
+//BINARY SEARCH
+//TC=O(NLOGN) SC=O(N)
+class Solution {
+    //INSERT AT FIRST ELEMENT AFTER 5, IF INSERTING 5
+    static int binarySearch(ArrayList<Integer> ans, int key) {
+        int low = 0;
+        int high = ans.size() - 1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (ans.get(mid) == key) return mid;
+            else if (ans.get(mid) < key) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return high + 1;
+    }
+    public int lengthOfLIS(int[] arr) {
+        int size=arr.length;
+        ArrayList<Integer> ans = new ArrayList<>();
+        ans.add(arr[0]);
+        int len = 1;
+        for (int i = 1; i < size; i++) {
+            if (arr[i] > ans.get(ans.size() - 1)) {
+                ans.add(arr[i]);
+                len++;
+            } else {
+                int indx = binarySearch(ans, arr[i]);
+                ans.set(indx, arr[i]);
+            }
+        }
+        return len;
+    }
+}

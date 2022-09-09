@@ -1,0 +1,54 @@
+// Lowest Common Ancestor of a Binary Search Tree
+//TC=O(N) SC=O(N) RECURSION
+
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root==null)
+            return null;
+        else if(root.val==p.val || root.val==q.val)
+            return root;
+        else if(p.val<root.val && q.val<root.val)
+        {
+            return lowestCommonAncestor(root.left,p,q);
+        }
+        else if(p.val>root.val && q.val>root.val)
+        {
+            return lowestCommonAncestor(root.right,p,q);
+        }
+        else
+        {
+            return root;
+        }
+        
+    }
+}
+
+
+//ITERATIVE
+//TC=O(N) SC=O(1)
+
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root==null)
+            return null;
+        TreeNode curr=root;
+        while(curr!=null)
+        {
+            if(curr.val==p.val || curr.val==q.val)
+            return curr;
+        else if(p.val<curr.val && q.val<curr.val)
+        {
+            curr=curr.left;
+        }
+        else if(p.val>curr.val && q.val>curr.val)
+        {
+            curr=curr.right;
+        }
+        else
+        {
+            return curr;
+        }
+        }
+        return curr;
+    }
+}

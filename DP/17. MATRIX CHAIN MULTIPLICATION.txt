@@ -1,0 +1,83 @@
+//MATRIX CHAIN MULTIPLICATION
+
+//TC=EXPONENTIAL 
+static int fun(int i, int j, int arr[])
+    {
+        //only single array is left
+        if(i==j)
+        return 0;
+        int global=Integer.MAX_VALUE;
+        for(int k=i;k<j;k++)
+        {
+            int steps=arr[i-1]*arr[k]*arr[j]+fun(i,k,arr)+fun(k+1,j,arr);
+            global=Math.min(global,steps);
+        }
+        return global;
+    }
+    static int matrixMultiplication(int N, int arr[])
+    {
+        // code here
+       
+        return fun(1,N-1,arr);
+    }
+
+
+
+//MEMORIZATION
+//TC=O(N*n*n) SC=O(N*N) +O(N)
+class Solution{
+    static int fun(int i, int j, int arr[],int dp[][])
+    {
+        //only single array is left
+        if(i==j)
+        return 0;
+        if(dp[i][j]!=-1)
+        return dp[i][j];
+        int global=Integer.MAX_VALUE;
+        for(int k=i;k<j;k++)
+        {
+            int steps=arr[i-1]*arr[k]*arr[j]+fun(i,k,arr,dp)+fun(k+1,j,arr,dp);
+            global=Math.min(global,steps);
+        }
+        return dp[i][j]=global;
+    }
+    static int matrixMultiplication(int N, int arr[])
+    {
+        // code here
+        int dp[][]=new int[N][N];
+        for(int i=0;i<N;i++)
+        {
+            Arrays.fill(dp[i],-1);
+        }
+        return fun(1,N-1,arr,dp);
+    }
+}
+
+//TABULATION
+//TC=O(N*n*n) SC=O(n*n)
+static int matrixMultiplication(int N, int arr[])
+    {
+        // code here
+        //RANGE i 1,2,3,4,N-1       j= 1,2,3,4
+        int dp[][]=new int[N][N];
+        for(int i=N-1;i>=1;i--)
+        {
+            for(int j=i;j<N;j++)
+            {
+                if(i==j)
+                {
+                    dp[i][j]=0;
+                    continue;
+                }
+                int global=Integer.MAX_VALUE;
+                for(int k=i;k<j;k++)
+                {
+                    int steps=arr[i-1]*arr[k]*arr[j]+dp[i][k]+dp[k+1][j];
+                    global=Math.min(global,steps);
+                }
+                dp[i][j]=global;
+            }
+        }
+        return dp[1][N-1];
+    }
+

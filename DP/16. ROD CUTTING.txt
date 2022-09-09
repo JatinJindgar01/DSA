@@ -1,0 +1,117 @@
+//ROD CUTTING
+
+class Solution{
+        public int fun(int ind, int arr[], int target)
+        {
+          if(ind<0)
+          {
+              return 0;
+          }
+          int nonTake=fun(ind-1,arr,target);
+          int take=0;
+          int rod_len=ind+1;
+          if(rod_len<=target)
+            take= arr[ind]+fun(ind,arr,target-rod_len);
+           return Math.max(take,nonTake);
+        
+    }
+    public int cutRod(int price[], int n) {
+        //code here
+        return fun(n-1,price,n);
+        
+        
+    }
+}
+
+class Solution{
+        public int fun(int ind, int arr[], int target,int dp[][])
+        {
+          if(ind<0)
+          {
+              return 0;
+          }
+           if(dp[ind][target]!=-1)
+          return dp[ind][target];
+          int nonTake=fun(ind-1,arr,target,dp);
+          int take=0;
+          int rod_len=ind+1;
+          if(rod_len<=target)
+            take= arr[ind]+fun(ind,arr,target-rod_len,dp);
+           return dp[ind][target]=Math.max(take,nonTake);
+        
+    }
+    public int cutRod(int price[], int n) {
+        //code here
+        int dp[][]=new int[n][n+1];
+        for(int i=0;i<dp.length;i++)
+        {
+            Arrays.fill(dp[i],-1);
+        }
+        return fun(n-1,price,n,dp);
+        
+        
+    }
+}
+
+ public int cutRod(int price[], int n) {
+    
+        //code here
+        int dp[][]=new int[n+1][n+1];
+        for(int ind=0;ind<=n;ind++)
+        {
+            for(int target=0;target<=n;target++)
+            {
+                if(ind==0)
+                dp[ind][target]=0;
+                else
+                {
+                    int nonTake=dp[ind-1][target];
+                    int take=0;
+                    if(ind<=target)
+                       take=price[ind-1]+dp[ind][target-ind];
+                    dp[ind][target]=Math.max(take,nonTake);
+                    
+                    
+                }
+                
+            }
+        }
+        return dp[n][n];
+        
+    
+        
+    }
+
+
+
+public int cutRod(int price[], int n) {
+    
+        //code here
+        int prev[]=new int[n+1];
+        for(int ind=0;ind<=n;ind++)
+        {
+            int curr[]=new int[n+1];
+            for(int target=0;target<=n;target++)
+            {
+                if(ind==0)
+                curr[target]=0;
+                else
+                {
+                    int nonTake=prev[target];
+                    int take=0;
+                    if(ind<=target)
+                       take=price[ind-1]+curr[target-ind];
+                    curr[target]=Math.max(take,nonTake);
+                    
+                    
+                }
+                
+            }
+            prev=curr;
+        }
+        return prev[n];
+        
+    
+        
+    }
+

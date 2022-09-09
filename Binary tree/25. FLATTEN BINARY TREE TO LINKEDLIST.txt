@@ -1,0 +1,25 @@
+//FLATTEN BINARY TREE TO LINKEDLIST
+//TC=O(N) SC=O(1)
+//MORRIS TRAVERSAL
+//IF LEFT IS NOT NULL THEN MAKE THE RIGHT MOST NODE IN LEFT SUBTREE POINT TO CURR-->RIGHT. ALSO MAKE CURR.RIGHT POINT TO CURR.LEFT. ALSO MAKE CURR-->LEFT=NULL
+//THEN CURR=CURR-->RIGHT. IN BOTH CONDITIONS WHETHER LEFT IS NULL OR NOT.
+class Solution {
+    public void flatten(TreeNode root) {
+        TreeNode curr=root;
+        while(curr!=null)
+        {
+            if(curr.left!=null)
+            {
+                TreeNode p=curr.left;
+                while(p.right!=null)
+                {
+                    p=p.right;
+                }
+                p.right=curr.right;
+                curr.right=curr.left;
+                curr.left=null;
+            }
+            curr=curr.right;
+        }
+    }
+}

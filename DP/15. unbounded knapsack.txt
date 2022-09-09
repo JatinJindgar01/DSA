@@ -1,0 +1,121 @@
+//unbounded knapsack
+
+//RECURSION
+//TC=O(2^N) SC=O(N)
+public static int fun(int ind, int arr[], int target,int val[])
+    {
+        
+        if(ind<0)
+        {
+            return 0;
+        }
+          
+
+          int nonTake=fun(ind-1,arr,target,val);
+          int take=0;
+          if(arr[ind]<=target)
+            take=val[ind]+fun(ind,arr,target-arr[ind],val);
+           return Math.max(take,nonTake);
+        
+    }
+    //Function to return max value that can be put in knapsack of capacity W.
+    static int knapSack(int sum, int arr[], int val[], int N) 
+    { 
+         // your code here 
+
+        return fun(N-1,arr,sum,val);
+         
+    } 
+
+
+//MEMORIZATION
+//TC=O(N*sum) SC=O(N*SUM)+ O(N)
+public static int fun(int ind, int arr[], int target,int dp[][],int val[])
+    {
+        
+        if(ind<0)
+        {
+            return 0;
+        }
+          
+          if(dp[ind][target]!=-1)
+          return dp[ind][target];
+          int nonTake=fun(ind-1,arr,target,dp,val);
+          int take=0;
+          if(arr[ind]<=target)
+            take=val[ind]+fun(ind,arr,target-arr[ind],dp,val);
+           return dp[ind][target]=Math.max(take,nonTake);
+        
+    }
+    //Function to return max value that can be put in knapsack of capacity W.
+    static int knapSack(int W, int wt[], int val[], int n) 
+    { 
+         // your code here 
+        int dp[][]=new int[n][W+1];
+        for(int i=0;i<dp.length;i++)
+        {
+            Arrays.fill(dp[i],-1);
+        }
+        return fun(n-1,wt,W,dp,val);
+         
+         
+    } 
+//TABULATION
+//TC=O(N*SUM) SC=O(N*SUM)
+static int knapSack(int sum, int arr[], int val[], int N) 
+    { 
+         // your code here 
+        int dp[][]=new int[N+1][sum+1];
+        for(int ind=0;ind<=N;ind++)
+        {
+            for(int target=0;target<=sum;target++)
+            {
+                if(ind==0)
+                dp[ind][target]=0;
+                else
+                {
+                    int nonTake=dp[ind-1][target];
+                    int take=0;
+                    if(arr[ind-1]<=target)
+                       take=val[ind-1]+dp[ind][target-arr[ind-1]];
+                    dp[ind][target]=Math.max(take,nonTake);
+                    
+                    
+                }
+                
+            }
+        }
+        return dp[N][sum];
+         
+    } 
+
+//SPACE OPTIMIZATION
+//TC=O(N*sum) SC=O(1)
+ static int knapSack(int sum, int arr[], int val[], int N) 
+    { 
+         // your code here 
+        int prev[]=new int[sum+1];
+        for(int ind=0;ind<=N;ind++)
+        {
+            int curr[]=new int[sum+1];
+            for(int target=0;target<=sum;target++)
+            {
+                if(ind==0)
+                curr[target]=0;
+                else
+                {
+                    int nonTake=prev[target];
+                    int take=0;
+                    if(arr[ind-1]<=target)
+                       take=val[ind-1]+curr[target-arr[ind-1]];
+                    curr[target]=Math.max(take,nonTake);
+                    
+                    
+                }
+                
+            }
+            prev=curr;
+        }
+        return prev[sum];
+         
+    } 
